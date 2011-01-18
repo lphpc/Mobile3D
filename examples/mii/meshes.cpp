@@ -22,64 +22,64 @@ extern "C" {
 #define MAX_BEARD_NUM   3
 
 const char * body_file_name [MAX_BODY_NUM] = {
-        "res/male_body_1.am",
+        "/usr/local/share/mobile3d/mii/male_body_1.am",
 };
 
 
 const char * head_file_name [MAX_HEAD_NUM] = {
-        "res/male_head_guazilian.am",
-        "res/male_head_yuanlian.am",
-        "res/male_head_changlian.am",
-        "res/male_head_jianzui.am",
-        "res/male_head_sifang.am",
-        "res/male_head_changfang.am",
-        "res/male_head_xiakuanchanglian.am"
+        "/usr/local/share/mobile3d/mii/male_head_guazilian.am",
+        "/usr/local/share/mobile3d/mii/male_head_yuanlian.am",
+        "/usr/local/share/mobile3d/mii/male_head_changlian.am",
+        "/usr/local/share/mobile3d/mii/male_head_jianzui.am",
+        "/usr/local/share/mobile3d/mii/male_head_sifang.am",
+        "/usr/local/share/mobile3d/mii/male_head_changfang.am",
+        "/usr/local/share/mobile3d/mii/male_head_xiakuanchanglian.am"
 };
 
 
 const char * hair_file_name [MAX_HAIR_NUM] = {
-        "res/male_hair_01.am",
-        "res/male_hair_02.am",
-        "res/male_hair_03.am",
+        "/usr/local/share/mobile3d/mii/male_hair_01.am",
+        "/usr/local/share/mobile3d/mii/male_hair_02.am",
+        "/usr/local/share/mobile3d/mii/male_hair_03.am",
 };
 
 const char * eyebrow_l_file_name [MAX_EYEBROW_NUM] = {
-        "res/male_eyebrow_01_l.am",
-        "res/male_eyebrow_02_l.am",
-        "res/male_eyebrow_03_l.am",
+        "/usr/local/share/mobile3d/mii/male_eyebrow_01_l.am",
+        "/usr/local/share/mobile3d/mii/male_eyebrow_02_l.am",
+        "/usr/local/share/mobile3d/mii/male_eyebrow_03_l.am",
 };
 
 const char * eyebrow_r_file_name [MAX_EYEBROW_NUM] = {
-        "res/male_eyebrow_01_r.am",
-        "res/male_eyebrow_02_r.am",
-        "res/male_eyebrow_03_r.am",
+        "/usr/local/share/mobile3d/mii/male_eyebrow_01_r.am",
+        "/usr/local/share/mobile3d/mii/male_eyebrow_02_r.am",
+        "/usr/local/share/mobile3d/mii/male_eyebrow_03_r.am",
 
 };
 
 const char * eye_l_file_name [MAX_EYE_NUM] = {
-        "res/male_eye_01_l.am",
-        "res/male_eye_02_l.am",
-        "res/male_eye_03_l.am",
+        "/usr/local/share/mobile3d/mii/male_eye_01_l.am",
+        "/usr/local/share/mobile3d/mii/male_eye_02_l.am",
+        "/usr/local/share/mobile3d/mii/male_eye_03_l.am",
 };
 
 
 const char * eye_r_file_name [MAX_EYE_NUM] = {
-        "res/male_eye_01_r.am",
-        "res/male_eye_02_r.am",
-        "res/male_eye_03_r.am",
+        "/usr/local/share/mobile3d/mii/male_eye_01_r.am",
+        "/usr/local/share/mobile3d/mii/male_eye_02_r.am",
+        "/usr/local/share/mobile3d/mii/male_eye_03_r.am",
 };
 
 
 const char * nose_file_name [MAX_NOSE_NUM] = {
-        "res/male_nose_01.am",
-        "res/male_nose_02.am",
-        "res/male_nose_03.am",
+        "/usr/local/share/mobile3d/mii/male_nose_01.am",
+        "/usr/local/share/mobile3d/mii/male_nose_02.am",
+        "/usr/local/share/mobile3d/mii/male_nose_03.am",
 };
 
 const char * mouth_file_name [MAX_MOUTH_NUM] = {
-        "res/male_mouth_01.am",
-        "res/male_mouth_02.am",
-        "res/male_mouth_03.am",
+        "/usr/local/share/mobile3d/mii/male_mouth_01.am",
+        "/usr/local/share/mobile3d/mii/male_mouth_02.am",
+        "/usr/local/share/mobile3d/mii/male_mouth_03.am",
 };
 
 

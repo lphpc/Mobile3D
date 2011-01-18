@@ -5,3 +5,11 @@ add_executable (mii meshes.cpp mii.cpp)
 target_link_libraries (mii mobile3d ${CORELIBS})
 
 
+install (TARGETS mii
+	RUNTIME DESTINATION bin
+	)
+
+install (DIRECTORY res/ DESTINATION share/mobile3d/mii)
+
+
+

@@ -156,7 +156,7 @@ void init(){
 	world->setCamera (camera);
 
 	image = new ImageBMP ();
-	Texture *texture = image->loadTexture ("res/tim.bmp");
+	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/flag/tim.bmp");
 
 	for (int x = 0; x < GRID_WIDTH; x++) {
 		for (int y = 0; y < GRID_HEIGHT; y++) {

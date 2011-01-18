@@ -50,12 +50,12 @@ void init(){
 	world->setCamera (camera);
 
 	image = new ImageBMP ();
-	Texture *texture = image->loadTexture ("res/mobile3d.bmp");
+	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/model_am/mobile3d.bmp");
 
 
 	model = new ModelAM ();
 	//model->setMeshCount (7);
-	model->loadModel ("res/round_cube.am");
+	model->loadModel ("/usr/local/share/mobile3d/model_am/round_cube.am");
 
 	if (texture != NULL) {
 		model->setTextureId (texture->textureId, 0);

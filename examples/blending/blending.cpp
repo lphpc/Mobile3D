@@ -64,8 +64,8 @@ void init(){
 	world->setCamera (camera);
 
 	imageRGB = new ImageRGB ();
-	texture_bottom = imageRGB->loadRGBTexture ("res/floor.rgb");
-	texture_top = imageRGB->loadAlphaTexture ("res/caust00.bw");
+	texture_bottom = imageRGB->loadRGBTexture ("/usr/local/share/mobile3d/blending/floor.rgb");
+	texture_top = imageRGB->loadAlphaTexture ("/usr/local/share/mobile3d/blending/caust00.bw");
 	if (texture_top == NULL)
 		printf ("Failed to load rgb.\n");
 

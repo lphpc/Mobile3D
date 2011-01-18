@@ -90,7 +90,7 @@ void init(){
 	world->setCamera (camera);
 
 	image = new ImageTGA ();
-	Texture *texture = image->loadTexture ("res/clock.tga");
+	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/3dclock/clock.tga");
 
 
 	model = new Model ();
@@ -106,7 +106,7 @@ void init(){
 	//model->setScale (0.5f, 0.5f, 0.5f);
 
 	image_pointer = new ImageTGA ();
-	Texture *texture_pointer = image->loadTexture ("res/pointer.tga");
+	Texture *texture_pointer = image->loadTexture ("/usr/local/share/mobile3d/3dclock/pointer.tga");
 
 
 	model_pointer = new Model ();
@@ -121,7 +121,7 @@ void init(){
 
 
 	image_pointer_small = new ImageTGA ();
-	Texture *texture_pointer_small = image->loadTexture ("res/pointer_small.tga");
+	Texture *texture_pointer_small = image->loadTexture ("/usr/local/share/mobile3d/3dclock/pointer_small.tga");
 
 	model_pointer_small = new Model ();
 	model_pointer_small->setMeshCount (MESH_NUM);

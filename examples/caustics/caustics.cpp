@@ -81,7 +81,7 @@ void init(){
 	world->setCamera (camera);
 
 	image = new ImageBMP ();
-	texture_bottom = image->loadTexture ("./res/rocks.bmp");
+	texture_bottom = image->loadTexture ("/usr/local/share/mobile3d/caustics/rocks.bmp");
 
     texture_caust = (Texture**)malloc (NUM_PATTERNS * sizeof (Texture*));
     memset (texture_caust, 0, NUM_PATTERNS * sizeof (Texture*));
@@ -89,7 +89,7 @@ void init(){
     for (int i = 0; i < NUM_PATTERNS; i += causticIncrement){
         char filename [80];
 
-        sprintf(filename, "./res/caust%02d.bmp", i);
+        sprintf(filename, "/usr/local/share/mobile3d/caust%02d.bmp", i);
 		printf ("filename = %s.\n", filename);
         texture_caust[i] = image->loadTexture (filename);
         
