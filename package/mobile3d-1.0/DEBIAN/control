@@ -1,0 +1,8 @@
+Package: mobile3d
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: i386
+Depends: freeglut3
+Maintainer: Liu Peng <lphpc@yahoo.com>
+Description: Mobile3d is an OpenGL ES toolkit for mobile embedded devices.
