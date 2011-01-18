@@ -1,30 +1,24 @@
 
-build for PC
- - modify CMakeLists.txt
- 	- comment  SET( ANDROID "YES" )
- 	- uncomment add_definitions(-DOPENGL)
- - cd build
- - cmake ..
- - make 
- - sudo make install
+Mobile3D is an OpenGL ES toolkit to ease embedded 3D development. Main features include:
+
+  - Wrap OpenGL ES API
+  - Provide frequently-used 3D effect control/widget
+
+Mobile3D is open source based on GPL.
+
+Mobile3D arch is as following:  
+
+-----------------------------------------
+|               APP                     |
+-----------------------------------------
+|             Mobile3D                  |
+-----------------------------------------
+|            OpenGL ES API              |
+-----------------------------------------
+|               Kernel                  |
+-----------------------------------------
+|              Hardware                 |
+-----------------------------------------
 
 
-
-build for android ndk 
-
- - ln -s gcc-android g++-android
- - modify android-build-env's  ANDROID_GCC_WRAPPERS to your own path
- - . ./android-build-env
- - cd build
- - cmake -D CMAKE_INSTALL_PREFIX=/home/liuuupen/android/android-ndk-r4b/build/platforms/android-8/arch-arm/usr/ ..
- - make
- - sudo make install
- - adb remount
- - adb push libmobile3d.so.1.2 /system/lib
- - adb remount
- - enter device shell: adb shell
- - cd /system/lib
- - ln -s libmobile3d.so.1.2 libmobile3d.so.1  note: libmobile3d.so do not work.
-
-
-
+Mobile3D include: World, Camera, Mesh, Model, Image, Texture.
