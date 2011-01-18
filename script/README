@@ -1,0 +1,7 @@
+
+mulselect.ms
+A 3DMax script which export the selected model object to .am format
+
+
+convert all images from gif  to jpg 
+ls *.gif | sed -e "s/.gif$//" | xargs -n1 --replace convert {}.gif {}.jpg
