@@ -3,6 +3,8 @@ build for PC
  - modify CMakeLists.txt
  	- comment  SET( ANDROID "YES" )
  	- uncomment add_definitions(-DOPENGL)
+	- to build mobile3d lib, uncomment ADD_SUBDIRECTORY(source) and  comment ADD_SUBDIRECTORY(example)
+	- to build mobile3d demos, uncomment ADD_SUBDIRECTORY(example) and comment ADD_SUBDIRECTORY(source) 
  - cd build
  - cmake ..
  - make 
