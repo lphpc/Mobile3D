@@ -85,6 +85,7 @@ int main(int argc, char** argv){
   	glutInitWindowPosition(0,0);
   	glutCreateWindow("simple");
   	glutDisplayFunc(display);
+	glutIdleFunc(display);
   	glutKeyboardFunc(keyboard);
   	init();
   	glutMainLoop();

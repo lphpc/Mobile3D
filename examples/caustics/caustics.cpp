@@ -89,7 +89,7 @@ void init(){
     for (int i = 0; i < NUM_PATTERNS; i += causticIncrement){
         char filename [80];
 
-        sprintf(filename, "/usr/local/share/mobile3d/caust%02d.bmp", i);
+        sprintf(filename, "/usr/local/share/mobile3d/caustics/caust%02d.bmp", i);
 		printf ("filename = %s.\n", filename);
         texture_caust[i] = image->loadTexture (filename);
         

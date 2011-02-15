@@ -27,42 +27,6 @@ Light *light = NULL;
 static GLfloat pos[4] = {0.0f, 10.0f, 20.0f, 1.0f};
 
 
-extern M3D::am_model_t **bodies;
-extern int body_num;
-int body_id = 0;
-
-extern M3D::am_model_t **heads;
-extern int head_num;
-int head_id = 0;
-
-extern M3D::am_model_t **hair;
-extern int hair_num;
-int hair_id = 0;
-
-extern M3D::am_model_t **eyebrows_l;
-extern int eyebrow_l_num;
-int eyebrow_l_id = 0;
-
-extern M3D::am_model_t **eyebrows_r;
-extern int eyebrow_r_num;
-int eyebrow_r_id = 0;
-
-extern M3D::am_model_t **eyes_l;
-extern int eye_l_num;
-int eye_l_id = 0;
-
-extern M3D::am_model_t **eyes_r;
-extern int eye_r_num;
-int eye_r_id = 0;
-
-extern M3D::am_model_t **noses;
-extern int nose_num;
-int nose_id = 0;
-
-extern M3D::am_model_t **mouths;
-extern int mouth_num;
-int mouth_id = 0;
-
 ModelAM* model;
 
 ModelAM*      model_body;
@@ -79,107 +43,21 @@ int startx = 0, starty = 0;
 static GLfloat angle_x = 0;   /* in degrees */
 static GLfloat angle_y = 0;   /* in degrees */
 
-extern bool loadAllMeshes ();
-extern void destroyAllMeshes ();
-extern void dumpBodies ();
-
-
-void createDefaultMii ()
-{
-
-    model_body = new M3D::ModelAM ();
-    model_body->loadModel (bodies[body_id]);
-
-    model_head = new M3D::ModelAM ();
-    model_head->loadModel (heads[head_id]);
-
-    model_hair = new M3D::ModelAM ();
-    model_hair->loadModel (hair[hair_id]);
-
-    model_eyebrow_l = new M3D::ModelAM ();
-    model_eyebrow_l->loadModel (eyebrows_l[eyebrow_l_id]);
-
-    model_eyebrow_r = new M3D::ModelAM ();
-    model_eyebrow_r->loadModel (eyebrows_r[eyebrow_r_id]);
-
-    model_eye_l = new M3D::ModelAM ();
-    model_eye_l->loadModel (eyes_l[eye_l_id]);
-
-    model_eye_r = new M3D::ModelAM ();
-    model_eye_r->loadModel (eyes_r[eye_r_id]);
-
-    model_nose = new M3D::ModelAM ();
-    model_nose->loadModel (noses[nose_id]);
-
-    model_mouth = new M3D::ModelAM ();
-    model_mouth->loadModel (mouths[mouth_id]);
-
-    printf ("A person is created.\n");
-
-
-    return;
-}
-
-
-void updateMiiEyebrows ()
-{
-    if (model_eyebrow_l == NULL)
-        model_eyebrow_l = new ModelAM ();
-
-    model_eyebrow_l->updateModel (eyebrows_l[eyebrow_l_id]);
-
-
-    if (model_eyebrow_r == NULL)
-        model_eyebrow_r = new ModelAM ();
-
-    model_eyebrow_r->updateModel (eyebrows_r[eyebrow_r_id]);
-
-}
-
-void updateMiiEyes ()
-{
-    if (model_eye_l == NULL)
-        model_eye_l = new ModelAM ();
-
-    model_eye_l->updateModel (eyes_l[eye_l_id]);
-
-
-    if (model_eye_r == NULL)
-        model_eye_r = new ModelAM ();
-
-    model_eye_r->updateModel (eyes_r[eye_r_id]);
-
-}
-
-
-void updateMiiNose ()
-{
-    if (model_nose == NULL)
-        model_nose = new ModelAM ();
-
-    model_nose->updateModel (noses[nose_id]);
-}
-
-
-void updateMiiMouth ()
-{
-    if (model_mouth == NULL)
-        model_mouth = new ModelAM ();
-
-    model_mouth->updateModel (mouths[mouth_id]);
-}
-
-
-
 
 void display(){
 
+
 	world->prepareRender ();
 
-	//model->renderModel ();
+//	model->renderModel ();
 
+/*
     model_body->renderModel();
+*/
+/*
     model_head->renderModel();
+*/
+
     model_hair->renderModel();
     model_eyebrow_l->renderModel();
     model_eyebrow_r->renderModel();
@@ -210,40 +88,39 @@ void init(){
     world->setLight(light);
 /*
 	model = new ModelAM ();
-	model->loadModel ("res/male_hair_01.am");
+	model->loadModel ("/usr/local/share/mobile3d/model_am/quad.am");
 */
 /*
 	model_body = new ModelAM ();
-	model_body->loadModel ("res/male_body_1.am");
-	
+	model_body->loadModel ("/usr/local/share/mobile3d/mii/male_body_1.am");
+*/	
+/*
     model_head = new ModelAM ();
-	model_head->loadModel ("res/male_head_changfang.am");
-
-    model_hair = new ModelAM ();
-	model_hair->loadModel ("res/male_hair_01.am");
-
-    model_eyebrow_l = new ModelAM ();
-	model_eyebrow_l->loadModel ("res/male_eyebrow_01_l.am");
-
-    model_eyebrow_r = new ModelAM ();
-	model_eyebrow_r->loadModel ("res/male_eyebrow_01_r.am");
-
-    model_eye_l = new ModelAM ();
-	model_eye_l->loadModel ("res/male_eye_01_l.am");
-
-    model_eye_r = new ModelAM ();
-	model_eye_r->loadModel ("res/male_eye_01_r.am");
-
-    model_nose = new ModelAM ();
-	model_nose->loadModel ("res/male_nose_01.am");
-
-    model_mouth = new ModelAM ();
-	model_mouth->loadModel ("res/male_mouth_01.am");
+	model_head->loadModel ("/usr/local/share/mobile3d/mii/male_head_changfang.am");
 */
 
-    loadAllMeshes ();
-    createDefaultMii ();
-	//dumpBodies ();
+    model_hair = new ModelAM ();
+	model_hair->loadModel ("/usr/local/share/mobile3d/mii/male_hair_01.am");
+
+
+    model_eyebrow_l = new ModelAM ();
+	model_eyebrow_l->loadModel ("/usr/local/share/mobile3d/mii/male_eyebrow_01_l.am");
+
+    model_eyebrow_r = new ModelAM ();
+	model_eyebrow_r->loadModel ("/usr/local/share/mobile3d/mii/male_eyebrow_01_r.am");
+
+
+    model_eye_l = new ModelAM ();
+	model_eye_l->loadModel ("/usr/local/share/mobile3d/mii/male_eye_02_l.am");
+
+    model_eye_r = new ModelAM ();
+	model_eye_r->loadModel ("/usr/local/share/mobile3d/mii/male_eye_02_r.am");
+
+    model_nose = new ModelAM ();
+	model_nose->loadModel ("/usr/local/share/mobile3d/mii/male_nose_01.am");
+
+    model_mouth = new ModelAM ();
+	model_mouth->loadModel ("/usr/local/share/mobile3d/mii/male_mouth_03.am");
 
 
 } 
@@ -251,6 +128,7 @@ void init(){
 void keyboard(unsigned char key, int x, int y){ 
 	switch(key) 
 	{
+/*
 		case 'f':
 			printf ("f is pressed.\n");
             if (eyebrow_l_id < eyebrow_l_num - 1)
@@ -301,6 +179,7 @@ void keyboard(unsigned char key, int x, int y){
             updateMiiMouth ();
 
 			break; 
+*/
 		case 'q': 
 		case 'Q': 
 		case 27: 
@@ -310,7 +189,7 @@ void keyboard(unsigned char key, int x, int y){
 }
 
 void processMouse(int button, int state, int x, int y) {
-
+/*
 	if (button == GLUT_LEFT_BUTTON) {
     	if (state == GLUT_DOWN) {
 			printf ("mouse left button is pressed.\n");
@@ -321,18 +200,18 @@ void processMouse(int button, int state, int x, int y) {
 			printf ("mouse left button is released.\n"); 
 		} 
 	} 
-
+*/
 }
 
 void processMouseActiveMotion(int x, int y) {
-
+/*
 	printf ("Mouse is moving. \n");
 	angle_y = angle_y + (x - startx);
 	angle_x = angle_x + (y - starty);
 	startx = x;
 	starty = y;
 	glutPostRedisplay();
-
+*/
 }
 
 
@@ -345,6 +224,7 @@ int main(int argc, char** argv){
   	glutCreateWindow("simple");
 
   	glutDisplayFunc(display);
+	glutIdleFunc(display);
   	glutKeyboardFunc(keyboard);
 	glutMouseFunc(processMouse);
 	glutMotionFunc(processMouseActiveMotion);
@@ -367,7 +247,6 @@ int main(int argc, char** argv){
     FREEANDNULL (model_nose);
     FREEANDNULL (model_mouth);
 
-    destroyAllMeshes ();
 
   	return 0;
 }

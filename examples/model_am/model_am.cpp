@@ -45,7 +45,8 @@ void init(){
 	world->init ();
 
 	camera = new Camera ();
-	camera->setEye (0.0f, 0.0f, 5.0f);
+	camera->setEye (0.0f, 0.0f, 55.0f);
+	//camera->setEye (0.0f, 0.0f, 5.0f);
 	
 	world->setCamera (camera);
 
@@ -55,7 +56,8 @@ void init(){
 
 	model = new ModelAM ();
 	//model->setMeshCount (7);
-	model->loadModel ("/usr/local/share/mobile3d/model_am/round_cube.am");
+	model->loadModel ("/usr/local/share/mobile3d/model_am/quad.am");
+	//model->loadModel ("/usr/local/share/mobile3d/model_am/round_cube.am");
 
 	if (texture != NULL) {
 		model->setTextureId (texture->textureId, 0);
@@ -115,6 +117,7 @@ int main(int argc, char** argv){
   	glutCreateWindow("simple");
 
   	glutDisplayFunc(display);
+	glutIdleFunc(display);
   	glutKeyboardFunc(keyboard);
 	glutMouseFunc(processMouse);
 	glutMotionFunc(processMouseActiveMotion);

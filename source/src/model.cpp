@@ -1,5 +1,6 @@
 
 #include "model.h"
+#include "log.h"
 
 M3D_BEGIN_NAMESPACE
 
@@ -165,7 +166,7 @@ void Mesh::initGlCmds() {
     if (m_normals != NULL)
         glEnableClientState(GL_NORMAL_ARRAY);
 
-    if (m_uvs != NULL) {
+    if (m_uvs != NULL &&  m_textureId != -1) {
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glEnable(GL_TEXTURE_2D);
     } else {
@@ -196,6 +197,7 @@ void Mesh::initGlCmds() {
 
 
 void Mesh::renderMesh() {
+
 
 	if (!m_enabled)
     	return;
@@ -257,24 +259,53 @@ void Mesh::renderMesh() {
     //Add for light/material
     if (m_materialAmbient != NULL) {
         glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_materialAmbient);
+
+        _M3D_PRINTF ("ambient: r = %g, g = %g, b = %g.\n", m_materialAmbient[0], m_materialAmbient[1], m_materialAmbient[2]);
+
     }
 
     if (m_materialDiffuse != NULL){
         glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_materialDiffuse);
+        _M3D_PRINTF ("diffuse: r = %g, g = %g, b = %g.\n", m_materialDiffuse[0], m_materialDiffuse[1], m_materialDiffuse[2]);
+
     }
 
     if (m_materialSpecular != NULL) {
         glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_materialSpecular);
+      	_M3D_PRINTF ("specular: r = %g, g = %g, b = %g.\n", m_materialSpecular[0], m_materialSpecular[1], m_materialSpecular[2]);
+
     }
 
 
-    if (m_materialEmission != NULL)
+    if (m_materialEmission != NULL) {
         glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, m_materialEmission);
+
+      _M3D_PRINTF ("emission: r = %g, g = %g, b = %g.\n", m_materialEmission[0], m_materialEmission[1], m_materialEmission[2]);
+
+	}
 
 
     if (m_materialShininess != NULL) {
         glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, m_materialShininess);
+      	_M3D_PRINTF ("shininess: s = %g.\n", m_materialShininess[0]);
+
     }
+
+
+    //dump indices
+
+    if (m_indices != NULL){
+    	for (int i = 0; i < m_triangleNums * 3; i++) {
+        	_M3D_PRINTF ("indices[%d] = %d. \n", i, m_indices[i]);
+    	}
+	}
+
+    //dump vertices
+    for (int i = 0; i < 6 * 3; i++) {
+        _M3D_PRINTF ("m_vertices[%d] = %g. \n", i, m_vertices[i]);
+    }
+
+
 
 
     //end light/material
