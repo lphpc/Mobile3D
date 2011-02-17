@@ -1,0 +1,28 @@
+
+#!/bin/bash
+
+export ANDROID_NDK_ROOT="$HOME/android/android-ndk-r5"
+export ANDROID_GCC_WRAPPERS="$HOME/work/mobile3d/mobile3d-git"
+
+export PATH="$ANDROID_GCC_WRAPPERS:$ANDROID_NDK_ROOT/toolchains/arm-linux-androideabi-4.4.3/prebuilt/linux-x86/bin/:$PATH"
+export CROSS_PREFIX="arm-linux-androideabi-"
+export SYSROOT="$ANDROID_NDK_ROOT/platforms/android-9/arch-arm"
+
+# The config is specified in $ANDROID_NDK_ROOT/build/toolchains/arm-eabi-4.2.1/setup.mk
+# and $ANDROID_NDK_ROOT/build/core/build-*.mk
+
+export MAKE="make"
+
+# Use android wrappers
+export CC="gcc-android"
+export CXX="g++-android"
+
+export LD="deliberatey-undefined-do-not-use-directly"
+export CPP="${CROSS_PREFIX}gcc -E"
+export AS="${CROSS_PREFIX}as"
+export OBJCOPY="${CROSS_PREFIX}objcopy"
+export OBJDUMP="${CROSS_PREFIX}objdump"
+export STRIP="${CROSS_PREFIX}strip"
+export RANLIB="${CROSS_PREFIX}ranlib"
+export CCLD="${CROSS_PREFIX}gcc"
+export AR="${CROSS_PREFIX}ar"

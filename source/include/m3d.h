@@ -17,6 +17,7 @@ extern "C" {
 #include <GL/gl.h>
 #else 
 #include <GLES/gl.h>
+#include <android/log.h>
 #endif
 
 #define M3D_BEGIN_NAMESPACE namespace M3D {

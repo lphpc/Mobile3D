@@ -1,0 +1,178 @@
+#!/bin/bash
+# Android gcc/g++ wrapper
+#
+# As android uses completely hacked and gutted gcc, it also
+# uses -nostdlib, so for the linking phase we must explicitly
+# specify crtbegin, crtend and friends. => We can't just do
+# with LDFLAGS. :-(
+#
+# set DRY_RUN=1 for dry run
+# set V=1 for verbose run
+
+V=1
+
+if [ -z $CROSS_PREFIX ]; then
+    echo "Source android-build-env first!"
+    exit 1
+fi
+
+REAL_CC="${CROSS_PREFIX}gcc"
+REAL_CXX="${CROSS_PREFIX}g++" 
+
+# Inspired by ndk-wrappers:COMMON_FLAGS="--sysroot=$SYSROOT -march=armv5te -mtune=xscale -msoft-float -mthumb-interwork -ffunction-sections -funwind-tables -fstack-protector -fno-short-enums -D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ -D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ -DANDROID"
+
+CFLAGS="$COMMON_FLAGS"
+
+CXXFLAGS="$COMMON_FLAGS"
+#CXXFLAGS="$COMMON_FLAGS" -fno-exceptions -fno-rtti
+
+TARGET_LIBGCC=`${CROSS_PREFIX}gcc -mthumb-interwork -print-libgcc-file-name`
+
+# Test if we're wrapping gcc or g++
+THIS_SCRIPT=`basename "$0"`
+
+if [[ "$THIS_SCRIPT" =~ 'gcc' ]]; then
+    WRAPPED="$REAL_CC"
+    COMPILE_FLAGS="$CFLAGS"
+elif [[ "$THIS_SCRIPT" =~ 'g++' ]]; then
+    WRAPPED="$REAL_CXX"
+    COMPILE_FLAGS="$CXXFLAGS"
+else
+    echo "Wrong script name - matches neither '^gcc' nor '^g++'."
+    exit 2
+fi
+
+# Determine what mode (link, compile, nothing) we're in
+
+LINK=1
+COMPILE=0
+SHARED=0
+
+for ARG in "$@"; do
+    case "$ARG" in
+        # Preprocess-only (-E) and don't assemble (-S) mean the same as -c for us - the same CFLAGS are needed
+        -c|-S|-E)
+            LINK=0
+            ;;
+
+        *.c|*.cpp|*.c++|*.cxx)
+            COMPILE=1
+            ;;
+
+# This is broken: gcc -c src.c -o object.o
+#        *.o)
+#            LINK=1
+#            ;;
+
+        -shared)
+            SHARED=1
+            ;;
+
+        -static)
+            echo "$0: Static executables not supported by this wrapper."
+            exit 5
+            ;;
+
+        -v)
+            LINK=0
+            COMPILE=0
+            break
+            ;;
+    esac
+done
+
+if [ $# -eq 0 ]; then
+    COMPILE=0
+    LINK=0
+fi
+
+function verbose_command
+{
+    if [ "$V" = "1" -o "$DRY_RUN" = "1" ]; then
+        echo "$@"
+    fi
+
+    if [ "$DRY_RUN" != "1" ]; then
+        "$@"
+    fi
+}
+
+# Compile source
+function compile
+{
+    # That's easy
+    verbose_command "$WRAPPED" $COMPILE_FLAGS "$@"
+}
+
+# Link a binary
+function link
+{
+    # TODO: Separate libraries, sources and other arguments
+    # Idea: read args till hitting sources -> that's USER_LIBS
+    # rest is USER_OBJECTS, ignore USER_ARGS
+    USER_LIBS=""
+    USER_OBJECTS=""
+    USER_ARGS=""
+
+    OBJECTS_HIT=0
+    for ARG in "$@"; do
+        if [ $OBJECTS_HIT -eq 0 ]; then
+            # Test if ARG is a lib
+            if [[ "$ARG" == *.o ]]; then
+                # is an object
+                OBJECTS_HIT=1
+                USER_OBJECTS="$USER_OBJECTS $ARG"
+            else
+                # a lib or an early param
+                USER_LIBS="$USER_LIBS $ARG"
+            fi
+        else
+            # We already reached objects, stuff all into USER_OBJECTS
+            USER_OBJECTS="$USER_OBJECTS $ARG"
+        fi
+    done
+
+    # Mess starts here
+    if [ $SHARED -eq 1 ]; then
+        # TODO: Remove -shared from args
+
+        # Building a shared library
+        LD_PREFIX="--sysroot=$SYSROOT -nostdlib -Wl,-shared,-Bsymbolic"
+        LD_BEGIN="$SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/libm.so"
+        # user objects
+        # user dyn. libs
+        LD_END="-Wl,--no-undefined -Wl,-rpath-link=$SYSROOT/usr/lib $TARGET_LIBGCC"
+
+        verbose_command "$WRAPPED" $LD_PREFIX $USER_OBJECTS $USER_LIBS $LD_BEGIN $LD_END $USER_ARGS
+    else
+        # Building dynamic executable
+        LD_PREFIX="--sysroot=$SYSROOT -nostdlib -Bdynamic -Wl,-dynamic-linker,/system/bin/linker -Wl,--gc-sections -Wl,-z,nocopyreloc"
+        # STLport static lib explodes here, needs to come after objects (??)
+        LD_BEGIN="$SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/libm.so $SYSROOT/usr/lib/crtbegin_dynamic.o"
+        # user objects
+        # user dyn. libs
+        LD_END="-Wl,--no-undefined -Wl,-rpath-link=$SYSROOT/usr/lib $TARGET_LIBGCC $SYSROOT/usr/lib/crtend_android.o"
+
+        verbose_command "$WRAPPED" $LD_PREFIX $LD_BEGIN $USER_OBJECTS $USER_LIBS $LD_END $USER_ARGS
+    fi
+}
+
+if [ $COMPILE -eq 0 -a $LINK -eq 0 ]; then
+    # No special handling needed, call $WRAPPED
+    verbose_command "$WRAPPED" "$@"
+fi
+
+# TODO: support link+compile
+if [ $COMPILE -eq 1 -a $LINK -eq 1 ]; then
+    echo "$0: Link and compile in one step is not supported by this wrapper."
+    exit 4
+fi
+
+if [ $COMPILE -eq 1 ]; then
+    compile "$@"
+elif [ $LINK -eq 1 ]; then
+    link "$@"
+else
+    echo "$0: Internal error: Uknown compiler mode."
+    exit 3
+fi

@@ -256,6 +256,7 @@ void Mesh::renderMesh() {
         glColorPointer(4, GL_UNSIGNED_BYTE, 0, m_colors);
 
 
+
     //Add for light/material
     if (m_materialAmbient != NULL) {
         glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_materialAmbient);

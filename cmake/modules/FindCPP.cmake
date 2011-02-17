@@ -12,15 +12,11 @@ MESSAGE(STATUS "Using bundled FindCPP.cmake...")
 FIND_PATH(
 	CPP_INCLUDE_DIR stdio.h 
    	/home/liuuupen/android/android-ndk-r5/platforms/android-9/arch-arm/usr/include/ 
-   	#/home/liuuupen/android/android-ndk-r4b/build/platforms/android-8/arch-arm/usr/include/ 
-   	#/home/liuuupen/android/android-ndk-r4-crystax/build/platforms/android-5/arch-arm/usr/include/ 
 )
 
 FIND_LIBRARY(
 	CPP_LIBRARIES NAMES  stdc++
    	PATHS /home/liuuupen/android/android-ndk-r5/platforms/android-9/arch-arm/usr/lib/ 
-   	#PATHS /home/liuuupen/android/android-ndk-r4b/build/platforms/android-8/arch-arm/usr/lib/ 
-   	#PATHS /home/liuuupen/android/android-ndk-r4-crystax/build/platforms/android-5/arch-arm/usr/lib/ 
 )
 
 MARK_AS_ADVANCED(

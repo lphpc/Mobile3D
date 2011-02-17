@@ -14,6 +14,7 @@ if (NOT OPENGLES_FOUND)
 		include/imageTGA.h
 		include/imagePixelData.h
 		include/light.h
+		include/log.h
 	)
 
 	set(SOURCE_FILES
@@ -53,6 +54,7 @@ else ()
 		include/imageTGA.h
 		include/imagePixelData.h
 		include/light.h
+		include/log.h
 	)
 
 	set(SOURCE_FILES
@@ -75,7 +77,7 @@ else ()
 
 
 
-	SET (CORELIBS ${OPENGLES_LIBRARIES})
+	SET (CORELIBS ${OPENGLES_LIBRARIES} log)
 	#SET (CORELIBS ${OPENGLES_LIBRARIES} ${CPP_LIBRARIES})
 
 

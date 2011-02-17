@@ -18,7 +18,7 @@ build for android ndk
  - modify android-build-env's  ANDROID_GCC_WRAPPERS to your own path
  - . ./android-build-env
  - cd build
- - cmake -D CMAKE_INSTALL_PREFIX=/home/liuuupen/android/android-ndk-r4b/build/platforms/android-8/arch-arm/usr/ ..
+ - cmake -D CMAKE_INSTALL_PREFIX=/home/liuuupen/android/android-ndk-r5/platforms/android-9/arch-arm/usr/ ..
  - make
  - sudo make install
  - adb remount
