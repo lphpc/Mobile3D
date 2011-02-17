@@ -530,11 +530,10 @@ bool Model::getScale(GLfloat *x, GLfloat *y, GLfloat *z, int meshIndex){
 void Model::setMeshCount(int meshCount) {
 
 	//Fixme: Maybe memory leam. mesh's member do not be free.
-    if (this->m_meshs != NULL) {
+    if (m_meshs != NULL) {
         free(m_meshs);
 		m_meshs = NULL;
         //delete[] m_meshs;
-        m_meshs = NULL;
     }
 
     if (meshCount > 0) {
@@ -555,12 +554,8 @@ int Model::getMeshCount() {
     return m_meshCount;
 }
 
-void Model::prepareFrame() {
-}
-
 void Model::renderModel() {
     //enable or disable gl command status
-    prepareFrame();
 
     for (int i = 0; i < m_meshCount; i++) {
         m_meshs[i].renderMesh();

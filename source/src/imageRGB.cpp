@@ -59,6 +59,8 @@ M3D_BEGIN_NAMESPACE
     	int swapFlag;
     	int x;
 
+		size_t result;
+
     	endianTest.testWord = 1;
     	if (endianTest.testByte[0] == 1) {
         	swapFlag = 1;
@@ -75,7 +77,7 @@ M3D_BEGIN_NAMESPACE
 			return NULL;
     	}
 
-    	fread(image, 1, 12, image->file);
+    	result = fread(image, 1, 12, image->file);
 
     	if (swapFlag) {
         	ConvertShort(&image->imagic, 6);
@@ -97,8 +99,8 @@ M3D_BEGIN_NAMESPACE
         	}
         	image->rleEnd = 512 + (2 * x);
         	fseek(image->file, 512, SEEK_SET);
-        	fread(image->rowStart, 1, x, image->file);
-        	fread(image->rowSize, 1, x, image->file);
+        	result = fread(image->rowStart, 1, x, image->file);
+        	result = fread(image->rowSize, 1, x, image->file);
         	if (swapFlag) {
             	ConvertUint(image->rowStart, x/(int) sizeof(unsigned));
             	ConvertUint((unsigned *)image->rowSize, x/(int) sizeof(int));
@@ -116,10 +118,11 @@ M3D_BEGIN_NAMESPACE
 	void ImageRGB::ImageGetRow(ImageRec *image, unsigned char *buf, int y, int z) {
     	unsigned char *iPtr, *oPtr, pixel;
     	int count;
+		size_t result;
 
     	if ((image->type & 0xFF00) == 0x0100) {
         	fseek(image->file, (long) image->rowStart[y+z*image->ysize], SEEK_SET);
-        	fread(image->tmp, 1, (unsigned int)image->rowSize[y+z*image->ysize],
+        	result = fread(image->tmp, 1, (unsigned int)image->rowSize[y+z*image->ysize],
               	image->file);
 
         	iPtr = image->tmp;
@@ -144,7 +147,7 @@ M3D_BEGIN_NAMESPACE
     	} else {
         	fseek(image->file, 512+(y*image->xsize)+(z*image->xsize*image->ysize),
               	SEEK_SET);
-        	fread(buf, 1, image->xsize, image->file);
+        	result = fread(buf, 1, image->xsize, image->file);
     	}
 	}
 

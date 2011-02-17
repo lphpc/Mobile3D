@@ -36,7 +36,6 @@ void ModelAM::loadModel (const char* filename)
     int uv_num = 0;
     int triangle_num = 0;
     int temp = 0;
-    float t1, t2, t3;
     int material_num = 0;
     float specular_level, glossiness;
 
@@ -82,10 +81,6 @@ void ModelAM::loadModel (const char* filename)
                             &vertices[j*3],
                             &vertices[j*3+1],
                             &vertices[j*3+2]);
-            /*printf ("mesh[%d]->vertex[%d] = %g %g %g.\n", i, j,
-                            m_model.meshes[i].vertices[j].vertex[0],
-                            m_model.meshes[i].vertices[j].vertex[1],
-                            m_model.meshes[i].vertices[j].vertex[2]);*/
         }
 
 		
@@ -95,6 +90,11 @@ void ModelAM::loadModel (const char* filename)
         r = fscanf (file, "%d\n", &uv_num);
 	
         uvs = (float*)malloc (uv_num * 2 * sizeof (float));
+        if (!uvs) {
+            //Fixme: free sth if needed.
+            return;
+        }
+
 
         for (j = 0; j < uv_num; j++)  {
             r = fscanf (file, "%g %g\n",
@@ -112,10 +112,15 @@ void ModelAM::loadModel (const char* filename)
 		setTriangleNums(triangle_num, i);
 
         indices = (short *)malloc (triangle_num * 3 * sizeof (short));
+        if (!indices) {
+            //Fixme: free sth if needed.
+            return;
+        }
+
 	
         for (j = 0; j < triangle_num; j++)  {
-            r = fscanf (file, "%d %d %d %d %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g\n",
-                           &temp, /*nSmoothGroup*/
+            r = fscanf (file, "%d %hd %hd %hd %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g\n",
+                           &temp, //nSmoothGroup
                            &indices[j*3],
                            &indices[j*3+1],
                            &indices[j*3+2],
@@ -135,32 +140,10 @@ void ModelAM::loadModel (const char* filename)
                            &box,
                            &box);
 
-                /*printf ("%d %d %d %d %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g\n",
-                               temp, //nSmoothGroup
-                               m_model.meshes[i].triangles[j].indices[0],
-                               m_model.meshes[i].triangles[j].indices[1],
-                               m_model.meshes[i].triangles[j].indices[2],
-                               m_model.meshes[i].triangles[j].normals[0][0],
-                               m_model.meshes[i].triangles[j].normals[0][1],
-                               m_model.meshes[i].triangles[j].normals[0][2],
-                               m_model.meshes[i].triangles[j].normals[1][0],
-                               m_model.meshes[i].triangles[j].normals[1][1],
-                               m_model.meshes[i].triangles[j].normals[1][2],
-                               m_model.meshes[i].triangles[j].normals[2][0],
-                               m_model.meshes[i].triangles[j].normals[2][1],
-                               m_model.meshes[i].triangles[j].normals[2][2],
-                               m_model.meshes[i].triangles[j].s[0],
-                               m_model.meshes[i].triangles[j].s[1],
-                               m_model.meshes[i].triangles[j].s[2],
-                               m_model.meshes[i].triangles[j].t[0],
-                               m_model.meshes[i].triangles[j].t[1],
-                               m_model.meshes[i].triangles[j].t[2]);*/
-
         }
 
 
         setIndices (indices, triangle_num * 3 * sizeof (short), i);
-
         FREEANDNULL (indices);
  
 
@@ -182,6 +165,7 @@ void ModelAM::loadModel (const char* filename)
 
 
 		//FIXME: handle only one material
+		//Basicly, diffuse decide mesh color in white light
 
         r = fscanf (file, "%g %g %g %g %g %g %g %g %g %g %g %g %g %g\n",
                            &specular_level,
@@ -242,8 +226,6 @@ void ModelAM::loadModel (const char* filename)
 
         }
 
-
- 
 
     }
 

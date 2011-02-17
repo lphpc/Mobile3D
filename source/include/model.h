@@ -93,8 +93,6 @@ class Model {
 protected:
     Mesh    *m_meshs;
     int     m_meshCount;
-    //private functions
-    void prepareFrame();
 
 public:
     Model();

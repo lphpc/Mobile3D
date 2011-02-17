@@ -51,13 +51,9 @@ void display(){
 
 //	model->renderModel ();
 
-/*
-    model_body->renderModel();
-*/
-/*
-    model_head->renderModel();
-*/
 
+    model_body->renderModel();
+    model_head->renderModel();
     model_hair->renderModel();
     model_eyebrow_l->renderModel();
     model_eyebrow_r->renderModel();
@@ -90,14 +86,15 @@ void init(){
 	model = new ModelAM ();
 	model->loadModel ("/usr/local/share/mobile3d/model_am/quad.am");
 */
-/*
+
 	model_body = new ModelAM ();
 	model_body->loadModel ("/usr/local/share/mobile3d/mii/male_body_1.am");
-*/	
-/*
+	
+
     model_head = new ModelAM ();
-	model_head->loadModel ("/usr/local/share/mobile3d/mii/male_head_changfang.am");
-*/
+	model_head->loadModel ("/usr/local/share/mobile3d/mii/male_head_sifang.am");
+	//model_head->loadModel ("/usr/local/share/mobile3d/mii/male_head_changfang.am");
+
 
     model_hair = new ModelAM ();
 	model_hair->loadModel ("/usr/local/share/mobile3d/mii/male_hair_01.am");
@@ -120,7 +117,7 @@ void init(){
 	model_nose->loadModel ("/usr/local/share/mobile3d/mii/male_nose_01.am");
 
     model_mouth = new ModelAM ();
-	model_mouth->loadModel ("/usr/local/share/mobile3d/mii/male_mouth_03.am");
+	model_mouth->loadModel ("/usr/local/share/mobile3d/mii/male_mouth_01.am");
 
 
 } 

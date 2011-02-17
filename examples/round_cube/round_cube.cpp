@@ -20,8 +20,7 @@ using namespace M3D;
 World *world = NULL;
 Camera *camera = NULL;
 ModelAM *model = NULL;
-Light *light = NULL;
-static GLfloat pos[4] = {5.0f, 0.0f, 30.0f, 1.0f};
+ImageBMP *image = NULL;
 
 static int startx = 0, starty = 0;
 static GLfloat angle_x = 0;   /* in degrees */
@@ -46,19 +45,27 @@ void init(){
 	world->init ();
 
 	camera = new Camera ();
-	camera->setEye (0.0f, 0.0f, 55.0f);
+	camera->setEye (0.0f, 0.0f, 5.0f);
 	
 	world->setCamera (camera);
 
-    light = new Light();
-    light->setPosition(pos);
-    world->setLight(light);
+	image = new ImageBMP ();
+	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/round_cube/mobile3d.bmp");
 
 
 	model = new ModelAM ();
-	model->setMeshCount (MESH_NUM);
-	model->loadModel ("/usr/local/share/mobile3d/model_am/quad.am");
+	model->setMeshCount (7);
+	model->loadModel ("/usr/local/share/mobile3d/round_cube/round_cube.am");
 
+	if (texture != NULL) {
+		model->setTextureId (texture->textureId, 0);
+		model->setTextureId (texture->textureId, 1);
+		model->setTextureId (texture->textureId, 2);
+		model->setTextureId (texture->textureId, 3);
+		model->setTextureId (texture->textureId, 4);
+		model->setTextureId (texture->textureId, 5);
+	}
+	model->setScale (0.5f, 0.5f, 0.5f); 
 } 
 
 void keyboard(unsigned char key, int x, int y){ 
