@@ -15,6 +15,7 @@ if (NOT OPENGLES_FOUND)
 		include/imagePixelData.h
 		include/light.h
 		include/log.h
+		include/M3DQuad.h
 	)
 
 	set(SOURCE_FILES
@@ -28,6 +29,7 @@ if (NOT OPENGLES_FOUND)
 		src/imageTGA.cpp
 		src/imagePixelData.cpp
 		src/light.cpp
+		src/M3DQuad.cpp
 	)
 
 	include_directories(
@@ -55,6 +57,7 @@ else ()
 		include/imagePixelData.h
 		include/light.h
 		include/log.h
+		include/M3DQuad.h
 	)
 
 	set(SOURCE_FILES
@@ -68,6 +71,7 @@ else ()
 		src/imageTGA.cpp
 		src/imagePixelData.cpp
 		src/light.cpp
+		src/M3DQuad.cpp
 	)
 
 	include_directories(
