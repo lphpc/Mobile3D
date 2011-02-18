@@ -18,7 +18,6 @@
 using namespace M3D;
 
 #define GRID_COUNT 24
-#define MARGIN 2.0
 
 World *world = NULL;
 Camera *camera = NULL;

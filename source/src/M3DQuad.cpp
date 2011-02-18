@@ -27,6 +27,9 @@ void M3DQuad::draw ()
 
 }
 
+/*
+ * image's width and height must base on 2
+ */
 void M3DQuad::create (float x, float y, float width, float height, const char* fileName)
 {
 	float *vertices = NULL;
@@ -113,8 +116,9 @@ void M3DQuad::create (float x, float y, float width, float height, const char* f
    		FREEANDNULL (uvs);
 
 
-
-		ImageTGA *image = new ImageTGA ();
+		//new/delete compile error in android
+		ImageTGA *image = (ImageTGA*) malloc(sizeof(ImageTGA));
+		//ImageTGA *image = new ImageTGA ();
 		Texture *texture = image->loadTexture (fileName);
     	if (texture != NULL)
         	model.setTextureId (texture->textureId, 0);
