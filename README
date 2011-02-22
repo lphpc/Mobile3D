@@ -22,3 +22,18 @@ Mobile3D arch is as following:
 
 
 Mobile3D include: World, Camera, Mesh, Model, Image, Texture.
+
+
+Mobile3D 1.0.1
+ - Fix bugs
+ - Port Mobile3D to android NDK
+ - Add M3DQuad
+ - Add demos for Android: androidgldemos, AndMii, photo3d
+
+
+Mobile3D 1.0
+ - Initial version.
+ - Core modules include World, Camera, Mesh, Model, Model_am, Image, Texture.
+ - Some demos: triangle, rectangle, texture, blending, caustics, model_am 
+
+
