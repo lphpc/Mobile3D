@@ -15,6 +15,8 @@ if (NOT OPENGLES_FOUND)
 		include/imagePixelData.h
 		include/light.h
 		include/log.h
+		include/M3DRenderer.h
+		include/M3DRenderObject.h
 		include/M3DQuad.h
 	)
 
@@ -29,6 +31,8 @@ if (NOT OPENGLES_FOUND)
 		src/imageTGA.cpp
 		src/imagePixelData.cpp
 		src/light.cpp
+		src/M3DRenderer.cpp
+		src/M3DRenderObject.cpp
 		src/M3DQuad.cpp
 	)
 
@@ -57,6 +61,8 @@ else ()
 		include/imagePixelData.h
 		include/light.h
 		include/log.h
+		include/M3DRenderer.h
+		include/M3DRenderObject.h
 		include/M3DQuad.h
 	)
 
@@ -71,6 +77,8 @@ else ()
 		src/imageTGA.cpp
 		src/imagePixelData.cpp
 		src/light.cpp
+		src/M3DRenderer.cpp
+		src/M3DRenderObject.cpp
 		src/M3DQuad.cpp
 	)
 

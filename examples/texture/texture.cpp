@@ -10,6 +10,7 @@
 #include <mobile3d/imageTGA.h>
 #include "data.h"
 
+//#define RENDERER 1
 
 #define WINDOW_W    500
 #define WINDOW_H    500
@@ -23,11 +24,22 @@ Camera *camera = NULL;
 Model *model = NULL;
 ImageTGA *image = NULL;
 
+#ifdef RENDERER
+M3DRenderer *renderer = NULL;
+#endif
+
+
 
 void display(){
  
 	world->prepareRender ();
+
+#ifdef RENDERER
+	model->renderModelNew (renderer);
+#else
 	model->renderModel ();
+#endif
+
 	world->finishRender ();
 
 	glFlush();
@@ -61,6 +73,10 @@ void init(){
 
 	//model->setScale (0.5f, 0.5f, 0.5f);
 
+#ifdef RENDERER
+	renderer = new M3DRenderer ();
+#endif
+
 
 }
 
@@ -86,6 +102,10 @@ int main(int argc, char** argv){
 	FREEANDNULL (world);
 	FREEANDNULL (camera);
 	FREEANDNULL (model);
+#ifdef RENDERER
+	FREEANDNULL (renderer);
+#endif
+
   	return 0;
 }
 

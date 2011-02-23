@@ -10,6 +10,8 @@
 #include "data.h"
 
 
+//#define RENDERER 1
+
 #define WINDOW_W    500
 #define WINDOW_H    500
 
@@ -19,11 +21,23 @@ World *world = NULL;
 Camera *camera = NULL;
 Model *model = NULL;
 
+#ifdef RENDERER
+M3DRenderer *renderer = NULL;
+#endif
+
+
 
 void display(){
  
 	world->prepareRender ();
+
+#ifdef RENDERER
+	model->renderModelNew (renderer);
+#else
 	model->renderModel ();
+#endif
+
+
 	world->finishRender ();
 
 	glFlush();
@@ -53,6 +67,11 @@ void init(){
     model->setColors(colors, VERTEX_NUM * 4 * sizeof(GLubyte), 1);
     model->setTriangleNums(1, 1);
 
+#ifdef RENDERER
+	renderer = new M3DRenderer ();
+#endif
+
+
 }
 
 void keyboard(unsigned char key, int x, int y){
@@ -77,6 +96,10 @@ int main(int argc, char** argv){
 	FREEANDNULL (world);
 	FREEANDNULL (camera);
 	FREEANDNULL (model);
+#ifdef RENDERER
+	FREEANDNULL (renderer);
+#endif
+
   	return 0;
 }
 

@@ -3,6 +3,8 @@
 #define _MODEL_H
 
 #include "m3d.h"
+#include "M3DRenderObject.h"
+#include "M3DRenderer.h"
 
 //#define MATRIX4X4 1
 
@@ -35,13 +37,15 @@ protected:
     GLfloat     *m_materialShininess;
 
 
+	GLfloat     *m_matrix;
+		
+    GLenum      m_renderPrimitivesMode;
+
     GLboolean   m_blendEnabled;
     GLenum      m_blendSFactor;
     GLenum      m_blendDFactor;
 
-	GLfloat     *m_matrix;
-		
-    GLenum      m_renderPrimitivesMode;
+
 
 private:
     void initGlCmds();
@@ -87,6 +91,16 @@ public:
 
 	void setRenderPrimitivesMode (GLenum mode);
 
+    GLfloat *getVertices ();
+    GLfloat *getNormals ();
+    GLfloat *getUvs ();
+    GLubyte *getColors ();
+    GLshort *getIndices ();
+	int getTriangleNum ();
+
+	//set mesh data pointer to ob
+	void getRenderObject (M3DRenderObject *ob);
+ 
 };
 
 class Model {
@@ -135,6 +149,9 @@ public:
 #endif
 
 	void setRenderPrimitivesMode (GLenum mode, int meshIndex);
+	Mesh* getMesh (int meshIndex);
+
+	void renderModelNew (M3DRenderer *renderer);
 };
 
 

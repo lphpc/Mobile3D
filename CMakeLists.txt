@@ -7,8 +7,8 @@ if(NOT CMAKE_BUILD_TYPE)
 ENDIF()
 
 
-SET( ANDROID "YES" )
-#add_definitions(-DOPENGL)
+#SET( ANDROID "YES" )
+add_definitions(-DOPENGL)
 
 
 if (NOT ANDROID)
@@ -17,8 +17,8 @@ find_package(GLUT)
 find_package(OpenGL)
 
 
-ADD_SUBDIRECTORY(source)
-#ADD_SUBDIRECTORY(examples)
+#ADD_SUBDIRECTORY(source)
+ADD_SUBDIRECTORY(examples)
 
 
 else ()

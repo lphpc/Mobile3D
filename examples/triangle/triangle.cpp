@@ -7,7 +7,10 @@
 #include <mobile3d/world.h>
 #include <mobile3d/camera.h>
 #include <mobile3d/model.h>
+#include <mobile3d/M3DRenderer.h>
 #include "data.h"
+
+//#define RENDERER 1
 
 #define WINDOW_W    500
 #define WINDOW_H    500
@@ -17,6 +20,10 @@ using namespace M3D;
 World *world = NULL;
 Camera *camera = NULL;
 Model *model = NULL;
+
+#ifdef RENDERER
+M3DRenderer *renderer = NULL;
+#endif
 
 
 void display(){
@@ -43,7 +50,13 @@ void display(){
 */
  
 	world->prepareRender ();
+
+#ifdef RENDERER
+	model->renderModelNew (renderer);
+#else
 	model->renderModel ();
+#endif
+
 	world->finishRender ();
 
 	glFlush();
@@ -67,6 +80,11 @@ void init(){
     model->setVertices(vertices0, VERTEX_NUM * 3 * sizeof(GLfloat), 0);
     model->setColors(colors, VERTEX_NUM * 4 * sizeof(GLubyte), 0);
     model->setTriangleNums(1, 0);
+
+
+#ifdef RENDERER
+	renderer = new M3DRenderer ();
+#endif
 	
 }
 
@@ -92,6 +110,9 @@ int main(int argc, char** argv){
 	FREEANDNULL (world);
 	FREEANDNULL (camera);
 	FREEANDNULL (model);
+#ifdef RENDERER
+	FREEANDNULL (renderer);
+#endif
   	return 0;
 }
 

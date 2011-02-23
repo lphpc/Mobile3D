@@ -19,10 +19,22 @@ ModelAM::~ModelAM() {
 
 
 void ModelAM::renderModel() {
-
+/*
     for (int i = 0; i < m_meshCount; i++) {
         m_meshs[i].renderMesh();
 	}
+*/
+	M3DRenderer *renderer = new M3DRenderer ();
+
+	for (int i = 0; i < m_meshCount; i++) {
+		M3DRenderObject *ob = new M3DRenderObject ();
+		m_meshs[i].getRenderObject (ob);
+		renderer->render(ob);
+		delete (ob);
+	}
+
+	delete (renderer);
+
 }
 
 

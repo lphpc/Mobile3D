@@ -160,21 +160,6 @@ bool Mesh::getScale(GLfloat *x, GLfloat *y, GLfloat *z){
 }
 
 void Mesh::initGlCmds() {
-    if (m_vertices != NULL)
-        glEnableClientState(GL_VERTEX_ARRAY);
-
-    if (m_normals != NULL)
-        glEnableClientState(GL_NORMAL_ARRAY);
-
-    if (m_uvs != NULL &&  m_textureId != -1) {
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glEnable(GL_TEXTURE_2D);
-    } else {
-        glDisable(GL_TEXTURE_2D);
-    }
-
-    if (m_colors != NULL)
-        glEnableClientState(GL_COLOR_ARRAY);
 
 	if (m_blendEnabled) {
      	//glDepthMask(GL_FALSE);
@@ -232,17 +217,23 @@ void Mesh::renderMesh() {
        	glScalef(m_scale[0], m_scale[1], m_scale[2]);
 
 
-    if (m_vertices != NULL)
+    if (m_vertices != NULL){
+        glEnableClientState(GL_VERTEX_ARRAY);
        	glVertexPointer(3, GL_FLOAT, 0, m_vertices);
+	}
     else 
        	return;
         
 
-    if (m_normals != NULL)
+    if (m_normals != NULL) {
+        glEnableClientState(GL_NORMAL_ARRAY);
         glNormalPointer(GL_FLOAT, 0, m_normals);
+	}
 
     if (m_uvs != NULL && m_textureId != -1) {
+        glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, m_textureId);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glTexCoordPointer(2, GL_FLOAT, 0, m_uvs);
     } else {
         glDisable(GL_TEXTURE_2D);
@@ -252,8 +243,12 @@ void Mesh::renderMesh() {
         }
     }
 
-    if (m_colors != NULL)
+
+
+    if (m_colors != NULL) {
+        glEnableClientState(GL_COLOR_ARRAY);
         glColorPointer(4, GL_UNSIGNED_BYTE, 0, m_colors);
+	}
 
 
 
@@ -325,6 +320,14 @@ void Mesh::renderMesh() {
 
     //restore matrix
     glPopMatrix();
+
+
+    glDisableClientState( GL_VERTEX_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_COLOR_ARRAY );
+
+
 }
 
 //Add for light/material
@@ -434,6 +437,72 @@ void Mesh::setMatrix (float* m){
 void Mesh::setRenderPrimitivesMode (GLenum mode){
 
 	m_renderPrimitivesMode = mode;
+}
+
+
+void Mesh::getRenderObject (M3DRenderObject *ob)
+{
+
+	if (m_vertices){
+		ob->m_vertices = m_vertices;
+		ob->m_vertexCount = m_triangleNums * 3;
+	}
+
+
+	if (m_indices){
+		ob->m_useIndex = true;
+		ob->m_indices = m_indices;
+		ob->m_indexCount = m_triangleNums * 3;
+	}
+	else {
+		ob->m_useIndex = false;
+		
+	}
+
+	if (m_colors)
+		ob->m_colors = m_colors;
+
+	if (m_normals)
+		ob->m_normals = m_normals;
+
+	if (m_uvs)
+		ob->m_uvs = m_uvs;
+
+	if (m_textureId != -1)
+		ob->m_textureId = m_textureId;
+
+
+	if (m_materialAmbient)
+		ob->m_materialAmbient = m_materialAmbient;
+
+	if (m_materialDiffuse)
+		ob->m_materialDiffuse = m_materialDiffuse;
+	
+	if (m_materialSpecular)
+		ob->m_materialSpecular = m_materialSpecular;
+
+	if (m_materialEmission)
+		ob->m_materialEmission = m_materialEmission;
+
+	if (m_materialShininess)
+		ob->m_materialShininess = m_materialShininess;
+
+
+	if (m_position)
+		ob->m_position = m_position;
+
+	if (m_rotate)
+		ob->m_rotate = m_rotate;
+
+	if (m_scale)
+		ob->m_scale = m_scale;
+
+	
+    ob->m_blendEnabled = m_blendEnabled;
+    ob->m_blendSFactor = m_blendSFactor;
+    ob->m_blendDFactor = m_blendDFactor;
+
+
 }
 
 
@@ -557,10 +626,26 @@ int Model::getMeshCount() {
 
 void Model::renderModel() {
     //enable or disable gl command status
-
+/*
     for (int i = 0; i < m_meshCount; i++) {
         m_meshs[i].renderMesh();
 	}
+*/
+	M3DRenderer *renderer = new M3DRenderer ();
+
+	for (int i = 0; i < m_meshCount; i++) {
+
+		M3DRenderObject *ob = new M3DRenderObject ();
+		m_meshs[i].getRenderObject (ob);
+		renderer->render(ob);
+		delete (ob);
+	}
+
+	delete (renderer);
+
+
+
+
 }
 
 
@@ -632,6 +717,52 @@ void Model::setMatrix (float *m){
 
 void Model::setRenderPrimitivesMode (GLenum mode, int meshIndex){
     m_meshs[meshIndex].setRenderPrimitivesMode(mode);
+}
+
+
+
+GLfloat* Mesh::getVertices ()
+{
+	return m_vertices;
+}
+
+GLfloat* Mesh::getNormals ()
+{
+	return m_normals;
+}
+
+GLfloat* Mesh::getUvs ()
+{
+	return m_uvs;
+}
+
+GLubyte* Mesh::getColors ()
+{
+	return m_colors;
+}
+
+GLshort* Mesh::getIndices ()
+{
+	return m_indices;
+}
+
+int Mesh::getTriangleNum ()
+{
+	return m_triangleNums;
+}
+
+Mesh* Model::getMesh(int meshIndex) {
+    return (m_meshs + meshIndex);
+}
+
+void Model::renderModelNew (M3DRenderer *renderer)
+{
+	for (int i = 0; i < m_meshCount; i++) {
+		M3DRenderObject *ob = new M3DRenderObject ();
+		m_meshs[i].getRenderObject (ob);
+		renderer->render(ob);
+		delete (ob);
+	}
 }
 
 
