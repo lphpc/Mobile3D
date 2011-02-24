@@ -3,6 +3,10 @@
 #include "log.h"
 #include "M3DRenderer.h"
 
+
+#define VBO_BUFFER_OFFSET(size) ((char *)NULL + (size))
+
+
 M3D_BEGIN_NAMESPACE
 
 
@@ -18,6 +22,9 @@ M3DRenderer::~M3DRenderer ()
 
 void M3DRenderer::render(const M3DRenderObject *ob) 
 {
+
+
+	void* pBufferData = 0;	
 
 /*
 	if (!mesh->isEnabled ())
