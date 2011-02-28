@@ -10,7 +10,8 @@
 #include <mobile3d/M3DRenderer.h>
 #include "data.h"
 
-//#define RENDERER 1
+#define USEINDEX 1
+#define USEVBO 1
 
 #define WINDOW_W    500
 #define WINDOW_H    500
@@ -20,10 +21,6 @@ using namespace M3D;
 World *world = NULL;
 Camera *camera = NULL;
 Model *model = NULL;
-
-#ifdef RENDERER
-M3DRenderer *renderer = NULL;
-#endif
 
 
 void display(){
@@ -51,11 +48,7 @@ void display(){
  
 	world->prepareRender ();
 
-#ifdef RENDERER
-	model->renderModelNew (renderer);
-#else
 	model->renderModel ();
-#endif
 
 	world->finishRender ();
 
@@ -76,22 +69,31 @@ void init(){
 	model = new Model ();
 	model->setMeshCount (MESH_NUM);
 
+#ifdef USEVBO
     //init second triangle
+	size_t vertexSizeInBytes = VERTEX_NUM * 3 * sizeof(GLfloat) + 1 * 3 * sizeof(GLshort);
+	//size_t vertexSizeInBytes = VERTEX_NUM * 3 * sizeof(GLfloat) + VERTEX_NUM * 4 * sizeof(GLubyte);
+	size_t indexSizeInBytes = 1 * 3 * sizeof(GLshort);
+	model->createVBO (vertexSizeInBytes, indexSizeInBytes, 0);
+#endif
+
     model->setVertices(vertices0, VERTEX_NUM * 3 * sizeof(GLfloat), 0);
+#ifdef USEINDEX
+    model->setIndices(indices0, 1 * 3 * sizeof(GLshort), 0);
+#endif
     model->setColors(colors, VERTEX_NUM * 4 * sizeof(GLubyte), 0);
     model->setTriangleNums(1, 0);
 
-
-#ifdef RENDERER
-	renderer = new M3DRenderer ();
-#endif
 	
 }
 
 void keyboard(unsigned char key, int x, int y){
   switch(key) {
     case 'q': case 'Q': case 27:
-      exit(0);
+#ifdef USEVBO
+		model->destroyVBO ();
+#endif
+      	exit(0);
       break;
   }
 }
@@ -110,9 +112,6 @@ int main(int argc, char** argv){
 	FREEANDNULL (world);
 	FREEANDNULL (camera);
 	FREEANDNULL (model);
-#ifdef RENDERER
-	FREEANDNULL (renderer);
-#endif
   	return 0;
 }
 

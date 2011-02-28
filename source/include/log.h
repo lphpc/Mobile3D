@@ -18,6 +18,16 @@ extern "C" {
 #endif
 
 
+#define GL_CHECK_ERROR \
+    { \
+        int e = glGetError(); \
+        if (e != 0) \
+        { \
+            _M3D_PRINTF ("OpenGL error 0x%04X at line %i in %s\n", e, __LINE__, __FILE__); \
+        } \
+    }
+
+
 
 
 

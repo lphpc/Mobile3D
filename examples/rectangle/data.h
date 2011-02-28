@@ -13,13 +13,19 @@ GLfloat vertices0[9] = {
     -1.0f, 1.0f, 0.0f
 };
 
+GLshort indices0[] = {
+	0, 1, 2,
+};
+
 GLfloat vertices1[9] = {
     -1.0f, -1.0f, 0.0f,
     1.0f, -1.0f, 0.0f,
     1.0f, 1.0f, 0.0f
 };
 
-
+GLshort indices1[] = {
+	0, 1, 2,
+};
 
 GLubyte colors[12] = {
     255, 0, 0, 0,

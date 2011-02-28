@@ -7,18 +7,16 @@
 
 M3D_BEGIN_NAMESPACE
 
-    class M3DRenderer {
+class M3DRenderer {
 
-    private:
+private:
 
-    public:
-        M3DRenderer ();
-        ~M3DRenderer ();
+public:
+    M3DRenderer ();
+    ~M3DRenderer ();
 
-
-		void enableBlending (GLenum sourceFactor, GLenum destFactor);
-		void render (const M3DRenderObject *ob);	
-    };
+	void render (const M3DRenderObject *ob);	
+};
 
 M3D_END_NAMESPACE
 

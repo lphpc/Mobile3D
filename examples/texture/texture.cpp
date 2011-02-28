@@ -10,7 +10,7 @@
 #include <mobile3d/imageTGA.h>
 #include "data.h"
 
-//#define RENDERER 1
+//#define VBO 1
 
 #define WINDOW_W    500
 #define WINDOW_H    500
@@ -24,21 +24,13 @@ Camera *camera = NULL;
 Model *model = NULL;
 ImageTGA *image = NULL;
 
-#ifdef RENDERER
-M3DRenderer *renderer = NULL;
-#endif
-
 
 
 void display(){
  
 	world->prepareRender ();
 
-#ifdef RENDERER
-	model->renderModelNew (renderer);
-#else
 	model->renderModel ();
-#endif
 
 	world->finishRender ();
 
@@ -63,6 +55,12 @@ void init(){
 	model = new Model ();
 	model->setMeshCount (MESH_NUM);
 
+#ifdef VBO	
+	size_t sizeInBytesVertex = VERTEX_NUM * 3 * sizeof(GLfloat) + VERTEX_NUM * 2 * sizeof (GLfloat);
+	size_t sizeInBytesIndex = TRIANGLE_NUM * 3 * sizeof(GLshort);
+	model->createVBO (sizeInBytesVertex, sizeInBytesIndex, 0);
+#endif
+
     model->setVertices(afVertices, VERTEX_NUM * 3 * sizeof(GLfloat), 0);
    	model->setIndices(afVertIndices, TRIANGLE_NUM * 3 * sizeof(GLshort), 0);
 	model->setUvs(afTexCoord, VERTEX_NUM * 2 * sizeof (GLfloat), 0);
@@ -73,18 +71,17 @@ void init(){
 
 	//model->setScale (0.5f, 0.5f, 0.5f);
 
-#ifdef RENDERER
-	renderer = new M3DRenderer ();
-#endif
 
 
 }
 
 void keyboard(unsigned char key, int x, int y){
-  switch(key) {
-    case 'q': case 'Q': case 27:
-      exit(0);
-      break;
+	switch(key) {
+    	case 'q': case 'Q': case 27:
+#ifdef VBO
+			model->destroyVBO ();
+#endif
+      		exit(0);
   }
 }
 
@@ -102,9 +99,6 @@ int main(int argc, char** argv){
 	FREEANDNULL (world);
 	FREEANDNULL (camera);
 	FREEANDNULL (model);
-#ifdef RENDERER
-	FREEANDNULL (renderer);
-#endif
 
   	return 0;
 }

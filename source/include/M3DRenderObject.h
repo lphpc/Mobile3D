@@ -3,6 +3,8 @@
 #define _M3D_RENDEROBJECT_H
 
 #include "m3d.h"
+#include "M3DHardwareVertexBuffer.h"
+#include "M3DHardwareIndexBuffer.h"
 
 M3D_BEGIN_NAMESPACE
 
@@ -52,6 +54,13 @@ public:
     GLenum      m_blendSFactor;
     GLenum      m_blendDFactor;
 
+
+	M3DHardwareVertexBuffer *m_hardwareVertexBuffer;
+	M3DHardwareIndexBuffer *m_hardwareIndexBuffer;
+
+	size_t m_positionSizeInBytes;
+	size_t m_colorSizeInBytes;
+	size_t m_uvSizeInBytes;
 
 
 public:

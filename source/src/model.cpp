@@ -29,6 +29,15 @@ void Mesh::initMemberVars () {
 	m_blendEnabled = false;
 	m_matrix = NULL;
 	m_renderPrimitivesMode = GL_TRIANGLES;
+
+	m_hardwareVertexBuffer = NULL;
+	m_hardwareIndexBuffer = NULL;
+
+	m_positionSizeInBytes = 0;
+	m_colorSizeInBytes = 0;
+	m_uvSizeInBytes = 0;
+
+
 }
 
 Mesh::~Mesh() {
@@ -46,14 +55,42 @@ Mesh::~Mesh() {
     FREEANDNULL(m_materialEmission);
     FREEANDNULL(m_materialShininess);
     FREEANDNULL(m_matrix);
+	delete (m_hardwareVertexBuffer);
+	delete (m_hardwareIndexBuffer);
 
 }
 
+/*
+ *  hardware buffer :
+ *  |position data | color data/uv data |
+ *  color data and uv data can not coexist.
+ */
 void Mesh::setVertices(GLfloat *vertices, int size) {
+/*
     FREEANDNULL(m_vertices);
-
     m_vertices = (GLfloat *) malloc(size);
     memcpy(m_vertices, vertices, size);
+*/
+
+	///////
+	//m_hardwareVertexBuffer = new M3DHardwareVertexBuffer (size, vertices, GL_STATIC_DRAW);
+
+
+	//position and colors
+	//int allSize = size + 3 * 4 * sizeof(GLubyte);
+	//m_hardwareVertexBuffer = new M3DHardwareVertexBuffer (allSize, vertices, GL_STATIC_DRAW);
+
+
+	m_positionSizeInBytes = size;
+	if (m_hardwareVertexBuffer) {
+		m_hardwareVertexBuffer->writeData (0, m_positionSizeInBytes, vertices, GL_STATIC_DRAW, false);
+	}
+	else {
+    	FREEANDNULL(m_vertices);
+    	m_vertices = (GLfloat *) malloc(size);
+    	memcpy(m_vertices, vertices, size);
+	}
+
 
     setEnabled(GL_TRUE);
 }
@@ -64,22 +101,70 @@ void Mesh::setNormals(GLfloat *normals, int size) {
     memcpy(m_normals, normals, size);
 }
 
+/*
+ *  hardware buffer :
+ *  |position data | color data/uv |
+ *  color data and uv data can not coexist.
+ */
 void Mesh::setUvs(GLfloat *uvs, int size) {
-    FREEANDNULL(m_uvs);
-    m_uvs = (GLfloat *) malloc(size);
-    memcpy(m_uvs, uvs, size);
+
+	m_uvSizeInBytes = size;
+	if (m_hardwareVertexBuffer) {
+		m_hardwareVertexBuffer-> writeData (m_positionSizeInBytes, size, uvs, GL_STATIC_DRAW, false);
+	}
+	else {
+    	FREEANDNULL(m_uvs);
+    	m_uvs = (GLfloat *) malloc(size);
+    	memcpy(m_uvs, uvs, size);
+	}
 }
 
+
+/*
+ *  hardware buffer :
+ *  |position data | color data/uv data |
+ *  color data and uv data can not coexist.
+ */
+
 void Mesh::setColors(GLubyte *colors, int size) {
+/*
     FREEANDNULL(m_colors);
     m_colors = (GLubyte *) malloc(size);
     memcpy(m_colors, colors, size);
+*/
+/*
+	int offset = 3 * 3 * sizeof(GLfloat);
+	m_hardwareVertexBuffer->writeData (offset, size, colors, GL_STATIC_DRAW, false);
+*/
+	m_colorSizeInBytes = size;
+	if (m_hardwareVertexBuffer)
+		m_hardwareVertexBuffer->writeData (m_positionSizeInBytes, m_colorSizeInBytes, colors, GL_STATIC_DRAW, false);
+	else {
+    	FREEANDNULL(m_colors);
+    	m_colors = (GLubyte *) malloc(size);
+    	memcpy(m_colors, colors, size);
+
+	}
 }
 
 void Mesh::setIndices(GLshort *indices, int size) {
+/*
     FREEANDNULL(m_indices);
     m_indices = (GLshort *) malloc(size);
-    memcpy(m_indices, indices, size);
+    memcpy(m_indices, indices, size);\
+*/
+/*
+	m_hardwareIndexBuffer = new M3DHardwareIndexBuffer (size, indices, GL_STATIC_DRAW);
+*/
+	if (m_hardwareIndexBuffer) {
+		m_hardwareIndexBuffer->writeData (0, size, indices, GL_STATIC_DRAW, false);
+	}
+	else {
+    	FREEANDNULL(m_indices);
+    	m_indices = (GLshort *) malloc(size);
+    	memcpy(m_indices, indices, size);
+
+	}
 }
 
 void Mesh::setTextureId(GLint textureId) {
@@ -445,19 +530,20 @@ void Mesh::getRenderObject (M3DRenderObject *ob)
 
 	if (m_vertices){
 		ob->m_vertices = m_vertices;
-		ob->m_vertexCount = m_triangleNums * 3;
 	}
+	//if glDrawArrays will use m_vertexCount
+	ob->m_vertexCount = m_triangleNums * 3;
 
 
 	if (m_indices){
 		ob->m_useIndex = true;
 		ob->m_indices = m_indices;
-		ob->m_indexCount = m_triangleNums * 3;
 	}
 	else {
 		ob->m_useIndex = false;
 		
 	}
+	ob->m_indexCount = m_triangleNums * 3;
 
 	if (m_colors)
 		ob->m_colors = m_colors;
@@ -502,9 +588,33 @@ void Mesh::getRenderObject (M3DRenderObject *ob)
     ob->m_blendSFactor = m_blendSFactor;
     ob->m_blendDFactor = m_blendDFactor;
 
+	ob->m_hardwareVertexBuffer = m_hardwareVertexBuffer;
+	ob->m_hardwareIndexBuffer = m_hardwareIndexBuffer;
+
+	ob->m_positionSizeInBytes = m_positionSizeInBytes;
+	ob->m_colorSizeInBytes = m_colorSizeInBytes;
+	ob->m_uvSizeInBytes = m_uvSizeInBytes;
 
 }
 
+void Mesh::createVBO (size_t sizeInBytesVertex, size_t sizeInBytesIndex)
+{
+	if (sizeInBytesVertex > 0)
+		m_hardwareVertexBuffer = new M3DHardwareVertexBuffer (sizeInBytesVertex, NULL, GL_STATIC_DRAW);
+
+	if (sizeInBytesIndex > 0)
+		m_hardwareIndexBuffer = new M3DHardwareIndexBuffer (sizeInBytesIndex, NULL, GL_STATIC_DRAW);
+}
+
+void Mesh::destroyVBO ()
+{
+	if (m_hardwareVertexBuffer)
+		delete m_hardwareVertexBuffer;
+
+	if (m_hardwareIndexBuffer)
+		delete m_hardwareIndexBuffer;
+
+}
 
 
 
@@ -517,8 +627,8 @@ Model::Model() :
 }
 
 Model::~Model() {
-    //delete [] m_meshs;
-    free(m_meshs);
+    delete [] m_meshs;
+    //free(m_meshs);
 	m_meshs = NULL;
 }
 
@@ -751,19 +861,22 @@ int Mesh::getTriangleNum ()
 	return m_triangleNums;
 }
 
-Mesh* Model::getMesh(int meshIndex) {
-    return (m_meshs + meshIndex);
+
+
+void Model::createVBO (size_t sizeInBytesVertex, size_t sizeInBytesIndex, int meshIndex)
+{
+	
+    m_meshs[meshIndex].createVBO(sizeInBytesVertex, sizeInBytesIndex);
 }
 
-void Model::renderModelNew (M3DRenderer *renderer)
+void Model::destroyVBO ()
 {
 	for (int i = 0; i < m_meshCount; i++) {
-		M3DRenderObject *ob = new M3DRenderObject ();
-		m_meshs[i].getRenderObject (ob);
-		renderer->render(ob);
-		delete (ob);
+		m_meshs[i].destroyVBO ();
 	}
+
 }
+
 
 
 

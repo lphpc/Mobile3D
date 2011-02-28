@@ -18,6 +18,9 @@ if (NOT OPENGLES_FOUND)
 		include/M3DRenderer.h
 		include/M3DRenderObject.h
 		include/M3DQuad.h
+		include/M3DHardwareIndexBuffer.h
+		include/M3DHardwareVertexBuffer.h
+
 	)
 
 	set(SOURCE_FILES
@@ -34,6 +37,8 @@ if (NOT OPENGLES_FOUND)
 		src/M3DRenderer.cpp
 		src/M3DRenderObject.cpp
 		src/M3DQuad.cpp
+		src/M3DHardwareIndexBuffer.cpp
+		src/M3DHardwareVertexBuffer.cpp
 	)
 
 	include_directories(
@@ -64,6 +69,9 @@ else ()
 		include/M3DRenderer.h
 		include/M3DRenderObject.h
 		include/M3DQuad.h
+		include/M3DHardwareIndexBuffer.h
+		include/M3DHardwareVertexBuffer.h
+
 	)
 
 	set(SOURCE_FILES
@@ -80,6 +88,9 @@ else ()
 		src/M3DRenderer.cpp
 		src/M3DRenderObject.cpp
 		src/M3DQuad.cpp
+		src/M3DHardwareIndexBuffer.cpp
+		src/M3DHardwareVertexBuffer.cpp
+
 	)
 
 	include_directories(

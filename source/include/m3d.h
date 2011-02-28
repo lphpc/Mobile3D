@@ -14,7 +14,9 @@ extern "C" {
 #include <math.h>
 
 #ifdef OPENGL
+#define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
+#include <GL/glext.h>
 #else 
 #include <GLES/gl.h>
 #include <android/log.h>
@@ -22,6 +24,9 @@ extern "C" {
 
 #define M3D_BEGIN_NAMESPACE namespace M3D {
 #define M3D_END_NAMESPACE }
+
+
+
 
 typedef double mdouble;
 typedef float mfloat;

@@ -5,6 +5,8 @@
 #include "m3d.h"
 #include "M3DRenderObject.h"
 #include "M3DRenderer.h"
+#include "M3DHardwareVertexBuffer.h"
+#include "M3DHardwareIndexBuffer.h"
 
 //#define MATRIX4X4 1
 
@@ -45,6 +47,13 @@ protected:
     GLenum      m_blendSFactor;
     GLenum      m_blendDFactor;
 
+
+	M3DHardwareVertexBuffer *m_hardwareVertexBuffer;
+	M3DHardwareIndexBuffer *m_hardwareIndexBuffer;
+
+	size_t m_positionSizeInBytes;
+	size_t m_colorSizeInBytes;
+	size_t m_uvSizeInBytes;
 
 
 private:
@@ -100,6 +109,8 @@ public:
 
 	//set mesh data pointer to ob
 	void getRenderObject (M3DRenderObject *ob);
+	void createVBO (size_t sizeInBytesVertex, size_t sizeInBytesIndex);
+	void destroyVBO ();
  
 };
 
@@ -149,9 +160,13 @@ public:
 #endif
 
 	void setRenderPrimitivesMode (GLenum mode, int meshIndex);
-	Mesh* getMesh (int meshIndex);
 
-	void renderModelNew (M3DRenderer *renderer);
+
+	void createVBO (size_t sizeInBytesVertex, size_t sizeInBytesIndex, int meshIndex);
+	void destroyVBO ();
+
+	
+
 };
 
 

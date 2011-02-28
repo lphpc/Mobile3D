@@ -26,6 +26,9 @@ M3DRenderObject::M3DRenderObject() {
 
 	m_blendEnabled = false;
 
+	m_hardwareVertexBuffer = NULL;
+	m_hardwareIndexBuffer = NULL;
+
 
 /*
     m_triangleNums = 0;

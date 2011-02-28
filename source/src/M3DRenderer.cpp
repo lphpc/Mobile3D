@@ -78,12 +78,46 @@ void M3DRenderer::render(const M3DRenderObject *ob)
        	glScalef(ob->m_scale[0], ob->m_scale[1], ob->m_scale[2]);
 
 
-    if (ob->m_vertices != NULL){
+
+	/**
+	 *  Must be careful the data sequence in hardwarebuffer: vertex | color/uv | 
+
+	if (ob->m_hardwareVertexBuffer != NULL && ob->m_positionSizeInBytes > 0){
+		glBindBuffer (GL_ARRAY_BUFFER, ob->m_hardwareVertexBuffer->m_bufferId);	
+		pBufferData = VBO_BUFFER_OFFSET(0);
         glEnableClientState(GL_VERTEX_ARRAY);
-       	glVertexPointer(3, GL_FLOAT, 0, ob->m_vertices);
+       	//glVertexPointer(3, GL_FLOAT, 0, 0);
+       	glVertexPointer(3, GL_FLOAT, 0, pBufferData);
+	}
+	else if (ob->m_vertices != NULL){
+        //glEnableClientState(GL_VERTEX_ARRAY);
+       	//glVertexPointer(3, GL_FLOAT, 0, ob->m_vertices);
+
+		pBufferData = ob->m_vertices;
+        glEnableClientState(GL_VERTEX_ARRAY);
+       	glVertexPointer(3, GL_FLOAT, 0, pBufferData);
 	}
     else 
        	return;
+
+
+	if (ob->m_hardwareVertexBuffer != NULL && ob->m_colorSizeInBytes > 0){
+		glBindBuffer (GL_ARRAY_BUFFER, ob->m_hardwareVertexBuffer->m_bufferId);	
+		pBufferData = VBO_BUFFER_OFFSET(ob->m_positionSizeInBytes);
+		//pBufferData = VBO_BUFFER_OFFSET(3 * 3 * sizeof(GLfloat));
+        glEnableClientState(GL_COLOR_ARRAY);
+        glColorPointer(4, GL_UNSIGNED_BYTE, 0, pBufferData);
+
+	}
+	else if (ob->m_colors != NULL){
+
+		pBufferData = ob->m_colors;
+        glEnableClientState(GL_COLOR_ARRAY);
+        glColorPointer(4, GL_UNSIGNED_BYTE, 0, pBufferData);
+	}
+
+
+
       
  
     if (ob->m_normals != NULL) {
@@ -91,11 +125,23 @@ void M3DRenderer::render(const M3DRenderObject *ob)
         glNormalPointer(GL_FLOAT, 0, ob->m_normals);
 	}
 
-    if (ob->m_uvs != NULL && ob->m_textureId != -1) {
+	if (ob->m_hardwareVertexBuffer != NULL && ob->m_uvSizeInBytes > 0 && ob->m_textureId != -1) {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, ob->m_textureId);
+
+		glBindBuffer (GL_ARRAY_BUFFER, ob->m_hardwareVertexBuffer->m_bufferId);	
+		pBufferData = VBO_BUFFER_OFFSET(ob->m_positionSizeInBytes);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glTexCoordPointer(2, GL_FLOAT, 0, ob->m_uvs);
+        glTexCoordPointer(2, GL_FLOAT, 0, pBufferData);
+
+	}
+    else if (ob->m_uvs != NULL && ob->m_textureId != -1) {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, ob->m_textureId);
+		pBufferData = ob->m_uvs;
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glTexCoordPointer(2, GL_FLOAT, 0, pBufferData);
+        //glTexCoordPointer(2, GL_FLOAT, 0, ob->m_uvs);
     } else {
         glDisable(GL_TEXTURE_2D);
         if ((ob->m_uvs != NULL && ob->m_textureId == -1) ||
@@ -103,12 +149,6 @@ void M3DRenderer::render(const M3DRenderObject *ob)
 			printf("Only have uvs or texture id!\n");
         }
     }
-
-
-    if (ob->m_colors != NULL) {
-        glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(4, GL_UNSIGNED_BYTE, 0, ob->m_colors);
-	}
 
 
 
@@ -174,13 +214,25 @@ void M3DRenderer::render(const M3DRenderObject *ob)
 			primitivesType = GL_TRIANGLES;
 			break;
 	}
+
 	
 
     //end light/material
 
-    if (ob->m_useIndex){
-        glDrawElements(primitivesType, ob->m_indexCount, GL_UNSIGNED_SHORT, ob->m_indices);
-        //glDrawElements(GL_TRIANGLES, triangleNum * 3, GL_UNSIGNED_SHORT, mesh->getIndices());
+	if (ob->m_hardwareIndexBuffer != NULL) {
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ob->m_hardwareIndexBuffer->m_bufferId);
+		pBufferData = VBO_BUFFER_OFFSET(0);
+		//pBufferData = (GLvoid*)((GLshort*)NULL);
+        glDrawElements(primitivesType, ob->m_indexCount, GL_UNSIGNED_SHORT, pBufferData);
+
+		
+	}
+    else if (ob->m_useIndex){
+		pBufferData = ob->m_indices;	
+        glDrawElements(primitivesType, ob->m_indexCount, GL_UNSIGNED_SHORT, pBufferData);
+        //glDrawElements(primitivesType, ob->m_indexCount, GL_UNSIGNED_SHORT, ob->m_indices);
+        ////glDrawElements(GL_TRIANGLES, triangleNum * 3, GL_UNSIGNED_SHORT, mesh->getIndices());
 	}
     else {
         glDrawArrays(primitivesType, 0, ob->m_vertexCount);
