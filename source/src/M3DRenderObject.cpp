@@ -28,6 +28,8 @@ M3DRenderObject::M3DRenderObject() {
 
 	m_hardwareVertexBuffer = NULL;
 	m_hardwareIndexBuffer = NULL;
+	m_softwareVertexBuffer = NULL;
+	m_softwareIndexBuffer = NULL;
 
 
 /*
@@ -36,6 +38,9 @@ M3DRenderObject::M3DRenderObject() {
 	m_matrix = NULL;
 */	
 	m_primType = PT_TRIANGLES;
+
+	m_vertexCount = 0;
+	m_indexCount = 0;
 
 }
 

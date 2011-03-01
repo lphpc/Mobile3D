@@ -81,7 +81,63 @@ void M3DRenderer::render(const M3DRenderObject *ob)
 
 	/**
 	 *  Must be careful the data sequence in hardwarebuffer: vertex | color/uv | 
+     */
 
+	if (ob->m_hardwareVertexBuffer != NULL) { 
+		if (ob->m_positionSizeInBytes > 0) {
+			glBindBuffer (GL_ARRAY_BUFFER, ob->m_hardwareVertexBuffer->m_bufferId);	
+			pBufferData = VBO_BUFFER_OFFSET(0);
+        	glEnableClientState(GL_VERTEX_ARRAY);
+       		glVertexPointer(3, GL_FLOAT, 0, pBufferData);
+		}
+	}
+	else if (ob->m_softwareVertexBuffer != NULL) {
+		if (ob->m_positionSizeInBytes > 0) {
+			pBufferData = ob->m_softwareVertexBuffer->getDataPtr (0);
+        	glEnableClientState(GL_VERTEX_ARRAY);
+       		glVertexPointer(3, GL_FLOAT, 0, pBufferData);
+		}
+	}
+	else if (ob->m_vertices != NULL){
+        //glEnableClientState(GL_VERTEX_ARRAY);
+       	//glVertexPointer(3, GL_FLOAT, 0, ob->m_vertices);
+
+		pBufferData = ob->m_vertices;
+        glEnableClientState(GL_VERTEX_ARRAY);
+       	glVertexPointer(3, GL_FLOAT, 0, pBufferData);
+	}
+    else 
+       	return;
+
+
+	if (ob->m_hardwareVertexBuffer != NULL) {
+		if (ob->m_colorSizeInBytes > 0){
+			glBindBuffer (GL_ARRAY_BUFFER, ob->m_hardwareVertexBuffer->m_bufferId);	
+			pBufferData = VBO_BUFFER_OFFSET(ob->m_positionSizeInBytes);
+        	glEnableClientState(GL_COLOR_ARRAY);
+        	glColorPointer(4, GL_UNSIGNED_BYTE, 0, pBufferData);
+		}
+
+	}
+	else if (ob->m_softwareVertexBuffer != NULL) {
+		if (ob->m_colorSizeInBytes > 0){
+			pBufferData = ob->m_softwareVertexBuffer->getDataPtr(ob->m_positionSizeInBytes);
+        	glEnableClientState(GL_COLOR_ARRAY);
+        	glColorPointer(4, GL_UNSIGNED_BYTE, 0, pBufferData);
+		}
+
+	}
+	else if (ob->m_colors != NULL){
+
+		pBufferData = ob->m_colors;
+        glEnableClientState(GL_COLOR_ARRAY);
+        glColorPointer(4, GL_UNSIGNED_BYTE, 0, pBufferData);
+	}
+
+
+
+
+/*
 	if (ob->m_hardwareVertexBuffer != NULL && ob->m_positionSizeInBytes > 0){
 		glBindBuffer (GL_ARRAY_BUFFER, ob->m_hardwareVertexBuffer->m_bufferId);	
 		pBufferData = VBO_BUFFER_OFFSET(0);
@@ -100,7 +156,6 @@ void M3DRenderer::render(const M3DRenderObject *ob)
     else 
        	return;
 
-
 	if (ob->m_hardwareVertexBuffer != NULL && ob->m_colorSizeInBytes > 0){
 		glBindBuffer (GL_ARRAY_BUFFER, ob->m_hardwareVertexBuffer->m_bufferId);	
 		pBufferData = VBO_BUFFER_OFFSET(ob->m_positionSizeInBytes);
@@ -115,16 +170,44 @@ void M3DRenderer::render(const M3DRenderObject *ob)
         glEnableClientState(GL_COLOR_ARRAY);
         glColorPointer(4, GL_UNSIGNED_BYTE, 0, pBufferData);
 	}
+*/
 
-
-
-      
  
     if (ob->m_normals != NULL) {
         glEnableClientState(GL_NORMAL_ARRAY);
         glNormalPointer(GL_FLOAT, 0, ob->m_normals);
 	}
 
+	if (ob->m_hardwareVertexBuffer != NULL){
+		if(ob->m_uvSizeInBytes > 0 && ob->m_textureId != -1) {
+        	glEnable(GL_TEXTURE_2D);
+        	glBindTexture(GL_TEXTURE_2D, ob->m_textureId);
+
+			glBindBuffer (GL_ARRAY_BUFFER, ob->m_hardwareVertexBuffer->m_bufferId);	
+			pBufferData = VBO_BUFFER_OFFSET(ob->m_positionSizeInBytes);
+        	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        	glTexCoordPointer(2, GL_FLOAT, 0, pBufferData);
+		}
+
+	}
+    else if (ob->m_softwareVertexBuffer != NULL) {
+		if (ob->m_uvs != NULL && ob->m_textureId != -1) {
+        	glEnable(GL_TEXTURE_2D);
+        	glBindTexture(GL_TEXTURE_2D, ob->m_textureId);
+			size_t offset = ob->m_positionSizeInBytes + ob->m_colorSizeInBytes;
+			pBufferData = ob->m_softwareVertexBuffer->getDataPtr(offset);
+        	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        	glTexCoordPointer(2, GL_FLOAT, 0, pBufferData);
+		}
+    } else {
+        glDisable(GL_TEXTURE_2D);
+        if ((ob->m_uvs != NULL && ob->m_textureId == -1) ||
+            (ob->m_uvs == NULL && ob->m_textureId != -1) ) {
+			printf("Only have uvs or texture id!\n");
+        }
+    }
+
+/*
 	if (ob->m_hardwareVertexBuffer != NULL && ob->m_uvSizeInBytes > 0 && ob->m_textureId != -1) {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, ob->m_textureId);
@@ -149,7 +232,7 @@ void M3DRenderer::render(const M3DRenderObject *ob)
 			printf("Only have uvs or texture id!\n");
         }
     }
-
+*/
 
 
     //Add for light/material
@@ -226,6 +309,11 @@ void M3DRenderer::render(const M3DRenderObject *ob)
 		//pBufferData = (GLvoid*)((GLshort*)NULL);
         glDrawElements(primitivesType, ob->m_indexCount, GL_UNSIGNED_SHORT, pBufferData);
 
+		
+	}
+	else if (ob->m_softwareIndexBuffer != NULL) {
+		pBufferData = ob->m_softwareIndexBuffer->getDataPtr(0);
+        glDrawElements(primitivesType, ob->m_indexCount, GL_UNSIGNED_SHORT, pBufferData);
 		
 	}
     else if (ob->m_useIndex){

@@ -20,6 +20,9 @@ if (NOT OPENGLES_FOUND)
 		include/M3DQuad.h
 		include/M3DHardwareIndexBuffer.h
 		include/M3DHardwareVertexBuffer.h
+		include/M3DSoftwareIndexBuffer.h
+		include/M3DSoftwareVertexBuffer.h
+		include/M3DMeshData.h
 
 	)
 
@@ -39,6 +42,10 @@ if (NOT OPENGLES_FOUND)
 		src/M3DQuad.cpp
 		src/M3DHardwareIndexBuffer.cpp
 		src/M3DHardwareVertexBuffer.cpp
+		src/M3DSoftwareIndexBuffer.cpp
+		src/M3DSoftwareVertexBuffer.cpp
+		src/M3DMeshData.cpp
+
 	)
 
 	include_directories(
@@ -71,6 +78,9 @@ else ()
 		include/M3DQuad.h
 		include/M3DHardwareIndexBuffer.h
 		include/M3DHardwareVertexBuffer.h
+		include/M3DSoftwareIndexBuffer.h
+		include/M3DSoftwareVertexBuffer.h
+		include/M3DMeshData.h
 
 	)
 
@@ -90,6 +100,9 @@ else ()
 		src/M3DQuad.cpp
 		src/M3DHardwareIndexBuffer.cpp
 		src/M3DHardwareVertexBuffer.cpp
+		src/M3DSoftwareIndexBuffer.cpp
+		src/M3DSoftwareVertexBuffer.cpp
+		src/M3DMeshData.cpp
 
 	)
 

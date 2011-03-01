@@ -8,10 +8,12 @@
 #include <mobile3d/camera.h>
 #include <mobile3d/model.h>
 #include <mobile3d/M3DRenderer.h>
+#include <mobile3d/M3DMeshData.h>
 #include "data.h"
 
 #define USEINDEX 1
 #define USEVBO 1
+#define USESOFTVBO 1
 
 #define WINDOW_W    500
 #define WINDOW_H    500
@@ -69,6 +71,18 @@ void init(){
 	model = new Model ();
 	model->setMeshCount (MESH_NUM);
 
+#ifdef USESOFTVBO
+
+	M3DMeshData *data = new M3DMeshData ();
+	data->setTriangleNums (1);	
+	data->setVertices (vertices0, sizeof(GLfloat) * 3, VERTEX_NUM);	
+	data->setIndices (indices0, sizeof(GLshort) * 3, 1 * 3);	
+	data->setColors (colors, VERTEX_NUM * 4 * sizeof(GLubyte));	
+	model->loadMesh (data, 0);
+	delete data;
+
+#else
+
 #ifdef USEVBO
     //init second triangle
 	size_t vertexSizeInBytes = VERTEX_NUM * 3 * sizeof(GLfloat) + 1 * 3 * sizeof(GLshort);
@@ -84,6 +98,7 @@ void init(){
     model->setColors(colors, VERTEX_NUM * 4 * sizeof(GLubyte), 0);
     model->setTriangleNums(1, 0);
 
+#endif  //end of SOFTVBO
 	
 }
 

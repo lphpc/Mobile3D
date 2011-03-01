@@ -32,11 +32,18 @@ void Mesh::initMemberVars () {
 
 	m_hardwareVertexBuffer = NULL;
 	m_hardwareIndexBuffer = NULL;
+	m_softwareVertexBuffer = NULL;
+	m_softwareIndexBuffer = NULL;
+
 
 	m_positionSizeInBytes = 0;
 	m_colorSizeInBytes = 0;
 	m_uvSizeInBytes = 0;
+	m_normalSizeInBytes = 0;
 
+	m_vertexCount = 0;
+	m_indexCount = 0;
+	
 
 }
 
@@ -57,6 +64,8 @@ Mesh::~Mesh() {
     FREEANDNULL(m_matrix);
 	delete (m_hardwareVertexBuffer);
 	delete (m_hardwareIndexBuffer);
+	delete (m_softwareVertexBuffer);
+	delete (m_softwareIndexBuffer);
 
 }
 
@@ -151,7 +160,7 @@ void Mesh::setIndices(GLshort *indices, int size) {
 /*
     FREEANDNULL(m_indices);
     m_indices = (GLshort *) malloc(size);
-    memcpy(m_indices, indices, size);\
+    memcpy(m_indices, indices, size);
 */
 /*
 	m_hardwareIndexBuffer = new M3DHardwareIndexBuffer (size, indices, GL_STATIC_DRAW);
@@ -590,10 +599,18 @@ void Mesh::getRenderObject (M3DRenderObject *ob)
 
 	ob->m_hardwareVertexBuffer = m_hardwareVertexBuffer;
 	ob->m_hardwareIndexBuffer = m_hardwareIndexBuffer;
+	ob->m_softwareVertexBuffer = m_softwareVertexBuffer;
+	ob->m_softwareIndexBuffer = m_softwareIndexBuffer;
+
+
 
 	ob->m_positionSizeInBytes = m_positionSizeInBytes;
 	ob->m_colorSizeInBytes = m_colorSizeInBytes;
 	ob->m_uvSizeInBytes = m_uvSizeInBytes;
+	ob->m_normalSizeInBytes = m_normalSizeInBytes;
+
+	ob->m_vertexCount = m_vertexCount;
+	ob->m_indexCount = m_indexCount;
 
 }
 
@@ -614,6 +631,78 @@ void Mesh::destroyVBO ()
 	if (m_hardwareIndexBuffer)
 		delete m_hardwareIndexBuffer;
 
+}
+
+void Mesh::load (M3DMeshData *data)
+{
+	m_triangleNums = data->m_triangleCount;
+	m_vertexCount = data->m_vertexCount;
+	m_indexCount = data->m_indexCount;
+
+	m_positionSizeInBytes = data->m_positionSizeInBytes;
+	m_colorSizeInBytes = data->m_colorSizeInBytes;
+	m_uvSizeInBytes = data->m_uvSizeInBytes;
+	m_normalSizeInBytes = data->m_normalSizeInBytes;
+
+	size_t offset = 0;
+
+	if (m_hardwareVertexBuffer)	{
+
+		if (data->m_vertices) {
+			offset = 0;
+			m_hardwareVertexBuffer->writeData (offset, data->m_positionSizeInBytes, data->m_vertices, GL_STATIC_DRAW);
+		}
+
+		if (data->m_colors) {
+			offset = data->m_positionSizeInBytes;
+			m_hardwareVertexBuffer->writeData (offset, data->m_colorSizeInBytes, data->m_colors, GL_STATIC_DRAW);
+		}
+
+		if (data->m_uvs) {
+			offset = data->m_positionSizeInBytes + data->m_colorSizeInBytes;
+			m_hardwareVertexBuffer->writeData (offset, data->m_uvSizeInBytes, data->m_uvs, GL_STATIC_DRAW);
+		}
+
+		if (data->m_normals) {
+			offset = data->m_positionSizeInBytes + data->m_colorSizeInBytes + data->m_uvSizeInBytes;
+			m_hardwareVertexBuffer->writeData (offset, data->m_normalSizeInBytes, data->m_normals, GL_STATIC_DRAW);
+
+		}
+
+
+
+	}
+	else {
+		size_t size = data->m_positionSizeInBytes + data->m_colorSizeInBytes + 
+				data->m_uvSizeInBytes + data->m_normalSizeInBytes;
+
+		m_softwareVertexBuffer = new M3DSoftwareVertexBuffer (size);
+
+
+		if (data->m_vertices) {
+			offset = 0;
+			m_softwareVertexBuffer->writeData (offset, data->m_positionSizeInBytes, data->m_vertices);
+		}
+
+		if (data->m_colors) {
+			offset = data->m_positionSizeInBytes;
+			m_softwareVertexBuffer->writeData (offset, data->m_colorSizeInBytes, data->m_colors);
+		}
+
+		if (data->m_uvs) {
+			offset = data->m_positionSizeInBytes + data->m_colorSizeInBytes;
+			m_softwareVertexBuffer->writeData (offset, data->m_uvSizeInBytes, data->m_uvs);
+		}
+
+		if (data->m_normals) {
+			offset = data->m_positionSizeInBytes + data->m_colorSizeInBytes + data->m_uvSizeInBytes;
+			m_softwareVertexBuffer->writeData (offset, data->m_normalSizeInBytes, data->m_normals);
+
+		}
+
+
+
+	}
 }
 
 
@@ -877,7 +966,11 @@ void Model::destroyVBO ()
 
 }
 
+void Model::loadMesh (M3DMeshData *data, int meshIndex)
+{
 
+    m_meshs[meshIndex].load(data);
+}
 
 
 M3D_END_NAMESPACE

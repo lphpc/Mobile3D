@@ -7,6 +7,9 @@
 #include "M3DRenderer.h"
 #include "M3DHardwareVertexBuffer.h"
 #include "M3DHardwareIndexBuffer.h"
+#include "M3DSoftwareVertexBuffer.h"
+#include "M3DSoftwareIndexBuffer.h"
+#include "M3DMeshData.h"
 
 //#define MATRIX4X4 1
 
@@ -50,11 +53,16 @@ protected:
 
 	M3DHardwareVertexBuffer *m_hardwareVertexBuffer;
 	M3DHardwareIndexBuffer *m_hardwareIndexBuffer;
+	M3DSoftwareVertexBuffer *m_softwareVertexBuffer;
+	M3DSoftwareIndexBuffer *m_softwareIndexBuffer;
 
 	size_t m_positionSizeInBytes;
 	size_t m_colorSizeInBytes;
 	size_t m_uvSizeInBytes;
-
+	size_t m_normalSizeInBytes;
+	
+	size_t m_vertexCount;
+	size_t m_indexCount;
 
 private:
     void initGlCmds();
@@ -111,6 +119,8 @@ public:
 	void getRenderObject (M3DRenderObject *ob);
 	void createVBO (size_t sizeInBytesVertex, size_t sizeInBytesIndex);
 	void destroyVBO ();
+
+	void load (M3DMeshData * data);
  
 };
 
@@ -164,8 +174,9 @@ public:
 
 	void createVBO (size_t sizeInBytesVertex, size_t sizeInBytesIndex, int meshIndex);
 	void destroyVBO ();
-
 	
+	void loadMesh (M3DMeshData *data, int meshIndex);
+		
 
 };
 

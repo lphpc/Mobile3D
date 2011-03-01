@@ -5,6 +5,10 @@
 #include "m3d.h"
 #include "M3DHardwareVertexBuffer.h"
 #include "M3DHardwareIndexBuffer.h"
+#include "M3DSoftwareVertexBuffer.h"
+#include "M3DSoftwareIndexBuffer.h"
+
+
 
 M3D_BEGIN_NAMESPACE
 
@@ -57,10 +61,13 @@ public:
 
 	M3DHardwareVertexBuffer *m_hardwareVertexBuffer;
 	M3DHardwareIndexBuffer *m_hardwareIndexBuffer;
+	M3DSoftwareVertexBuffer *m_softwareVertexBuffer;
+	M3DSoftwareIndexBuffer *m_softwareIndexBuffer;
 
 	size_t m_positionSizeInBytes;
 	size_t m_colorSizeInBytes;
 	size_t m_uvSizeInBytes;
+	size_t m_normalSizeInBytes;
 
 
 public:
