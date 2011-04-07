@@ -1,6 +1,7 @@
 
 
 ADD_SUBDIRECTORY (triangle)
+ADD_SUBDIRECTORY (triangle_cube)
 ADD_SUBDIRECTORY (rectangle)
 ADD_SUBDIRECTORY (texture)
 ADD_SUBDIRECTORY (blending)
