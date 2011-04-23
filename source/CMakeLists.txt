@@ -16,6 +16,7 @@ if (NOT OPENGLES_FOUND)
 		include/light.h
 		include/log.h
 		include/M3DQuad.h
+		include/font.h
 	)
 
 	set(SOURCE_FILES
@@ -30,6 +31,7 @@ if (NOT OPENGLES_FOUND)
 		src/imagePixelData.cpp
 		src/light.cpp
 		src/M3DQuad.cpp
+		src/font.cpp
 	)
 
 	include_directories(

@@ -42,7 +42,6 @@ void display(){
 	world->prepareRender ();
 
 	
-
 	//Face 0
 	model->setRotate (0.0, angle, 0.0);
 	model->renderModel ();
@@ -225,6 +224,7 @@ void init(){
 
 
 	//model->setScale (0.5f, 0.5f, 0.5f);
+
 
 
 }

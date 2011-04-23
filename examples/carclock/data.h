@@ -1,0 +1,104 @@
+
+#define VERTEX_NUM 4
+#define TRIANGLE_NUM 2
+
+
+
+
+GLfloat afVertices[]= {
+	-3.2, -1.0, 0.0,
+	-0.8, -1.0, 0.0,
+	-3.2, 1.0, 0.0,
+	-0.8, 1.0, 0.0,
+};
+
+
+
+GLfloat afVerticesR[]= {
+	0.8, -1.0, 0.0,
+	3.2, -1.0, 0.0,
+	0.8, 1.0, 0.0,
+	3.2, 1.0, 0.0,
+};
+
+GLfloat afVerticesF[]= {
+   -1.0, -0.5, 0.0,
+	1.0, -0.5, 0.0,
+   -1.0, 0.5, 0.0,
+	1.0, 0.5, 0.0,
+};
+
+
+
+/*
+GLfloat afVertices[]= {
+	-1.2, -1.0, 0.0,
+	1.2, -1.0, 0.0,
+	-1.2, 1.0, 0.0,
+	1.2, 1.0, 0.0,
+};
+*/
+
+GLfloat afTexCoord[] = {
+	0.0, 0.0,
+	1.0, 0.0,
+	0.0, 1.0,
+	1.0, 1.0,
+};
+
+GLshort afVertIndices[] = {
+	0, 1, 3,
+	3, 2, 0,
+};
+
+GLfloat afNormals[] = {
+	0, 0, 1, 0, 0, 1, 0, 0, 1,
+	0, 0, 1, 0, 0, 1, 0, 0, 1,
+};
+
+
+
+#define VERTEX_NUM_POINTER_SMALL 4
+#define TRIANGLE_NUM_POINTER_SMALL 2
+
+
+
+
+GLfloat afVerticesPointerSmall[]= {
+	-0.03, -0.1, 1.83801,
+	0.0, -0.6, 1.83801,
+	0.0, 0.0, 1.83801,
+	0.03, -0.1, 1.83801,
+};
+
+/*
+GLfloat afVerticesPointerSmall[]= {
+	-0.03, -0.1, 1.83801,
+	0.0, -0.6, 1.83801,
+	0.0, 0.0, 1.83801,
+	0.03, -0.1, 1.83801,
+};
+*/
+
+
+GLfloat afTexCoordPointerSmall[] = {
+	0.0, 0.0,
+	1.0, 0.0,
+	0.0, 1.0,
+	1.0, 1.1,
+};
+
+GLshort afVertIndicesPointerSmall[] = {
+	0, 1, 3,
+	3, 2, 0,
+};
+
+GLfloat afNormalsPointerSmall[] = {
+	0, 0, 1, 0, 0, 1, 0, 0, 1,
+	0, 0, 1, 0, 0, 1, 0, 0, 1,
+};
+
+
+
+
+
