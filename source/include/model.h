@@ -43,6 +43,9 @@ protected:
 		
     GLenum      m_renderPrimitivesMode;
 
+
+    GLfloat     *m_position2;
+
 private:
     void initGlCmds();
 
@@ -65,6 +68,9 @@ public:
     bool getRotate(GLfloat *x, GLfloat *y, GLfloat *z);
     void setScale(GLfloat x, GLfloat y, GLfloat z);
     bool getScale(GLfloat *x, GLfloat *y, GLfloat *z);
+
+	//add for temp
+    void setPosition2(GLfloat x, GLfloat y, GLfloat z);
 
     void renderMesh();
 
@@ -114,6 +120,9 @@ public:
     bool getScale(GLfloat *x, GLfloat *y, GLfloat *z, int meshIndex = 0);
     void setMeshCount(int meshCount);
     int getMeshCount();
+
+	//add for temp
+    void setPosition2(GLfloat x, GLfloat y, GLfloat z);
 
     void renderModel();
 

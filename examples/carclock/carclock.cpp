@@ -1,4 +1,5 @@
 
+#include <sys/time.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
@@ -23,9 +24,11 @@ Camera *camera = NULL;
 Model *model = NULL;
 Model *model_r = NULL;
 Model *model_f = NULL;
+Model *model_oil = NULL;
 ImageTGA *image = NULL;
 ImageTGA *image_r = NULL;
 ImageTGA *image_f = NULL;
+ImageTGA *image_oil = NULL;
 
 
 ImageTGA *image_pointer = NULL;
@@ -38,43 +41,105 @@ float angle_small = 0.0;
 bool counter_small = false;   
 
 
+//get the ms unit time in Linux & Android
+#define CLOCK(v_time) v_time.tv_sec * 1000 + v_time.tv_usec / 1000
+
+
+static long int start_time = 0;
+static struct timeval timeNow;
+
+static long int duration = 1000; //ms
+static long int elapse_time = 0;
+
+static float oil_x = 0.0f;
+static float oil_y = 0.0f;
+static float oil_z = 0.0f;
+static float oil_angle = 0.0f;
+
+static float clock_angle_r = 0.0f;
+static float clock_angle_l = 0.0f;
+
+static bool enable_animation = false;
+
 void display(){
- 
+
+	if(enable_animation) { 
+		
+    	gettimeofday(&timeNow, NULL);
+		elapse_time = CLOCK(timeNow) - start_time;
+		if (elapse_time < duration) {
+			oil_x += 0.001f;
+			oil_z -= 0.02f;
+			oil_angle -= 0.5;
+			clock_angle_r -= 0.2;
+			clock_angle_l += 0.2;
+			printf ("elapse %ld ms, duration = %ld.\n", elapse_time, duration);
+		}
+	} //end of enable_animation
+	
+
+
+
 	world->prepareRender ();
 
 	model_f->renderModel ();
+
+	if(enable_animation) { 
+		model->setPosition (-2.8, 0.0f, -1.5f);
+		model->setRotate (0.0f, clock_angle_l, 0.0f);
+		model->setPosition2 (2.8, 0.0f, 1.5f);
+	}
 	model->renderModel ();
+
+
+	if(enable_animation) { 
+		model_r->setPosition (2.8, 0.0f, -1.5f);
+		model_r->setRotate (0.0f, clock_angle_r, 0.0f);
+		model_r->setPosition2 (-2.8, 0.0f, 1.5f);
+	}
 	model_r->renderModel ();
 
-	if (counter) {
-		angle = angle - 0.1;
-		if (angle <= -160.0)
-        	counter = false;
-	}
-	else {
-		angle = angle + 0.1;
-		if (angle >= 100.0)
-        	counter = true;
+
+	//if disable animation, do not display pointer
+	if (!enable_animation) {
+		if (counter) {
+			angle = angle - 0.1;
+			if (angle <= -160.0)
+        		counter = false;
+		}
+		else {
+			angle = angle + 0.1;
+			if (angle >= 100.0)
+        		counter = true;
+
+		}
+
+
+		if (counter_small) {
+			angle_small = angle_small - 0.1;
+			if (angle_small <= -120.0)
+        		counter_small = false;
+		}
+		else {
+			angle_small = angle_small + 0.1;
+			if (angle_small >= -60.0)
+        		counter_small = true;
+
+		}
+
+		model_pointer_small->setPosition (-1.22, 0.0, 0.0);
+		model_pointer_small->setRotate (0.0, 0.0, angle_small);
+		model_pointer_small->renderModel ();
 
 	}
 
 
-	if (counter_small) {
-		angle_small = angle_small - 0.1;
-		if (angle_small <= -120.0)
-        	counter_small = false;
-	}
-	else {
-		angle_small = angle_small + 0.1;
-		if (angle_small >= -60.0)
-        	counter_small = true;
-
+	if(enable_animation) { 
+		model_oil->setPosition (oil_x, oil_y, oil_z);
+		model_oil->setRotate (0.0f, oil_angle, 0.0f);
 	}
 
-	model_pointer_small->setPosition (-1.12, 0.0, 0.0);
-	model_pointer_small->setRotate (0.0, 0.0, angle_small);
-	model_pointer_small->renderModel ();
-
+	model_oil->renderModel ();
 
 	world->finishRender ();
 
@@ -153,6 +218,20 @@ void init(){
 		model_f->setTextureId (texture_f->textureId, 0);
 
 
+	image_oil = new ImageTGA ();
+	Texture *texture_oil = image->loadTexture ("/usr/local/share/mobile3d/carclock/oil.tga");
+
+
+	model_oil = new Model ();
+	model_oil->setMeshCount (MESH_NUM);
+
+    model_oil->setVertices(afVerticesOil, VERTEX_NUM * 3 * sizeof(GLfloat), 0);
+   	model_oil->setIndices(afVertIndices, TRIANGLE_NUM * 3 * sizeof(GLshort), 0);
+	model_oil->setUvs(afTexCoord, VERTEX_NUM * 2 * sizeof (GLfloat), 0);
+    model_oil->setTriangleNums(TRIANGLE_NUM, 0);
+	if (texture_oil != NULL)
+		model_oil->setTextureId (texture_oil->textureId, 0);
+
 
 }
 
@@ -161,6 +240,39 @@ void keyboard(unsigned char key, int x, int y){
     case 'q': case 'Q': case 27:
       exit(0);
       break;
+    case 'r': case 'R': case 28:
+		if (enable_animation) {
+			enable_animation = false;
+
+			clock_angle_l = 0.0f;
+			clock_angle_r = 0.0f;
+
+			model->setPosition (0.0f, 0.0f, 0.0f);
+			model->setRotate (0.0f, 0.0f, 0.0f);
+			model->setPosition2 (0.0f, 0.0f, 0.0f);
+
+			model_r->setPosition (0.0f, 0.0f, 0.0f);
+			model_r->setRotate (0.0f, 0.0f, 0.0f);
+			model_r->setPosition2 (0.0f, 0.0f, 0.0f);
+
+			oil_angle = 0.0;
+			oil_x = 0.0f;
+			oil_y = 0.0f;
+			oil_z = 0.0f;
+
+			model_oil->setPosition (0.0f, 0.0f, 0.0f);
+			model_oil->setRotate (0.0f, 0.0f, 0.0f);
+
+
+		}
+		else {
+			enable_animation = true;
+    		gettimeofday(&timeNow, NULL);
+			start_time = CLOCK(timeNow);
+		}
+
+      break;
+
   }
 }
 

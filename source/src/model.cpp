@@ -29,6 +29,10 @@ void Mesh::initMemberVars () {
 	m_blendEnabled = false;
 	m_matrix = NULL;
 	m_renderPrimitivesMode = GL_TRIANGLES;
+
+//add for temp
+    m_position2 = NULL;
+
 }
 
 Mesh::~Mesh() {
@@ -47,6 +51,9 @@ Mesh::~Mesh() {
     FREEANDNULL(m_materialShininess);
     FREEANDNULL(m_matrix);
 
+
+	//add for temp
+    FREEANDNULL(m_position2);
 }
 
 void Mesh::setVertices(GLfloat *vertices, int size) {
@@ -103,6 +110,18 @@ void Mesh::setPosition(GLfloat x, GLfloat y, GLfloat z) {
     m_position[1] = y;
     m_position[2] = z;
 }
+
+// Add for temp
+void Mesh::setPosition2(GLfloat x, GLfloat y, GLfloat z) {
+    if (m_position2 == NULL) {
+        m_position2 = (GLfloat *) malloc(3 * sizeof(GLfloat));
+    }
+
+    m_position2[0] = x;
+    m_position2[1] = y;
+    m_position2[2] = z;
+}
+
 
 
 bool Mesh::getPosition(GLfloat *x, GLfloat *y, GLfloat *z){
@@ -227,6 +246,13 @@ void Mesh::renderMesh() {
         if (m_rotate[2] != 0.0f)
            	glRotatef(m_rotate[2], 0.0f, 0.0f, 1.0f);
     }
+
+	//FixMe: add for temp
+    if (m_position2 != NULL) {
+        glTranslatef(m_position2[0], m_position2[1], m_position2[2]);
+    }
+
+
 
     if (m_scale != NULL)
        	glScalef(m_scale[0], m_scale[1], m_scale[2]);
@@ -490,6 +516,14 @@ void Model::setPosition(GLfloat x, GLfloat y, GLfloat z) {
         m_meshs[i].setPosition(x, y, z);
     }
 }
+
+//Add for temp
+void Model::setPosition2(GLfloat x, GLfloat y, GLfloat z) {
+    for (int i = 0; i < m_meshCount; i++) {
+        m_meshs[i].setPosition2(x, y, z);
+    }
+}
+
 
 
 //Return false if no position data
