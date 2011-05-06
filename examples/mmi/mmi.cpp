@@ -118,7 +118,7 @@ void init(){
 	world->setCamera (camera);
 
 	image = new ImageTGA ();
-	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/mmi/rocks.tga");
+	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/mmi/menu.tga");
 
 
 	model = new Model ();
