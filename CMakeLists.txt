@@ -8,6 +8,8 @@ ENDIF()
 
 
 #SET( ANDROID "YES" )
+
+add_definitions(-DMAC)
 add_definitions(-DOPENGL)
 
 
