@@ -26,6 +26,8 @@ extern "C" {
 typedef double mdouble;
 typedef float mfloat;
 
+typedef GLfloat Real;
+
 
 enum M3D_BitmapConfig{
 	M3D_RGB, M3D_RGBA
@@ -51,6 +53,10 @@ typedef struct _Texture {
 #ifndef M_PI
 #define M_PI 3.1415926535897932f
 #endif
+
+
+#define DTOR (M_PI / 180.0f)
+#define SQR(x) (x * x)
 
 #define FREEANDNULL(pointer) \
     if (pointer != NULL) { \

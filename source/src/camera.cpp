@@ -10,6 +10,9 @@ M3D_BEGIN_NAMESPACE
             m_upx(0.0f),
             m_upy(1.0f),
             m_upz(0.0f) {
+
+        m_Orientation = Quaternion::IDENTITY;
+
     }
 
     Camera::~Camera() {
@@ -92,5 +95,101 @@ M3D_BEGIN_NAMESPACE
         glMultMatrixf(&m[0][0]);
         glTranslatef(-m_eyex, -m_eyey, -m_eyez);
     }
+
+
+    void Camera::gluLookAtv() {
+        GLfloat m[4][4];
+
+        identf(&m[0][0]);
+	m_Orientation.createMatrix (&m[0][0]);
+
+        glMultMatrixf(&m[0][0]);
+        glTranslatef(-m_eyex, -m_eyey, -m_eyez);
+    }
+
+
+
+
+
+
+    void Camera::move(GLfloat x, GLfloat y, GLfloat z) {
+
+        m_eyex += x;
+        m_eyey += y;
+        m_eyez += z;
+
+    }
+
+    void Camera::moveRelative(GLfloat x, GLfloat y, GLfloat z) {
+
+	Vector3 vec (x, y, z);
+
+        Vector3 trans = m_Orientation * vec;
+
+        m_eyex += trans.x;
+        m_eyey += trans.y;
+        m_eyez += trans.z;
+
+//        mPosition = mPosition + trans;
+
+    }
+
+
+
+    void Camera::rotate(const Quaternion& q)                                                                          
+    {   
+        // Note the order of the mult, i.e. q comes after                                                             
+        m_Orientation = q * m_Orientation;
+        
+    } 
+
+    void Camera::rotate(const Vector3& axis, const Radian& angle)                                                                          
+    {   
+        Quaternion q;
+        q.FromAngleAxis(angle,axis);
+        rotate(q);
+    }       
+
+    void Camera::roll (const GLfloat angle) //in radian
+    {
+
+	Degree d (angle);
+	Radian r = Radian(d);
+
+
+        Vector3 zAxis = m_Orientation * Vector3::UNIT_Z;
+        rotate(zAxis, r);
+
+    }
+
+    void Camera::yaw (const GLfloat angle)  //in degree
+    {
+	Degree d (angle);
+	Radian r = Radian(d);
+
+        Vector3 yAxis;
+
+        {
+            // Rotate around local Y axis
+            yAxis = m_Orientation * Vector3::UNIT_Y;
+        }
+
+        rotate(yAxis, r);
+
+
+
+    }
+
+    void Camera::pitch (const GLfloat angle)  //in radian
+    {
+
+	Degree d (angle);
+	Radian r = Radian(d);
+
+        Vector3 xAxis = m_Orientation * Vector3::UNIT_X;
+        rotate(xAxis, r);
+
+    }
+
 
 M3D_END_NAMESPACE

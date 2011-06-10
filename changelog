@@ -1,0 +1,29 @@
+
+This is Mobile3D version for Audi ITC.
+
+Add camera funtions
+  - update source/src/camera.cpp
+  - add examples/camera
+  - add examples/map
+  - add source/src/vector3.cpp
+  - add source/src/quateronion.cpp
+  - add source/src/m3dmath.cpp
+  - add source/include/vector3.h
+  - add source/include/quateronion.h
+  - add source/include/m3dmath.h
+
+
+Add skydome 
+  - examples/skydome
+
+
+Add interview demo
+  - examples/mmi.cpp     //interview version
+  - source/imageBMP.cpp  //add filter
+ 
+
+
+Add QNX support 
+  - same to Android
+
+

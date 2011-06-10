@@ -1,4 +1,5 @@
 
+#include <sys/time.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
@@ -8,6 +9,7 @@
 #include <mobile3d/camera.h>
 #include <mobile3d/model.h>
 #include <mobile3d/imageTGA.h>
+#include <mobile3d/imageBMP.h>
 #include "data.h"
 
 
@@ -21,7 +23,7 @@ using namespace M3D;
 World *world = NULL;
 Camera *camera = NULL;
 Model *model = NULL;
-ImageTGA *image = NULL;
+ImageBMP *image = NULL;
 ImageTGA *imageFloor = NULL;
 
 
@@ -37,19 +39,55 @@ Model *model_floor = NULL;
 
 float angle = 0.0;
 
+
+static long int start_time = 0;
+static struct timeval timeNow;
+
+static long int duration = 1000; //ms
+static long int elapse_time = 0;
+
+#define CLOCK(v_time) v_time.tv_sec * 1000 + v_time.tv_usec / 1000
+
+static bool enable_animation = false;
+
+static float menu_x = 0.0f;
+static float menu_y = 0.0f;
+static float menu_z = 0.0f;
+
+
+
 void display(){
  
 	world->prepareRender ();
 
+
+	if(enable_animation) { 
+		
+    	gettimeofday(&timeNow, NULL);
+		elapse_time = CLOCK(timeNow) - start_time;
+		if (elapse_time < duration) {
+			menu_z += 0.1f;
+			printf ("elapse %ld ms, duration = %ld.\n", elapse_time, duration);
+		}
+	} //end of enable_animation
+
+
 	
 	//Face 0
+	if(enable_animation && angle == 0.0) { 
+		model->setPosition (0.0f, 0.0f, menu_z);
+	}
 	model->setRotate (0.0, angle, 0.0);
 	model->renderModel ();
 
-
+	//Face 1
+	if(enable_animation && angle == 45.0) { 
+		model1->setPosition (0.0f, 0.0f, menu_z);
+	}
 	model1->setRotate (0.0, angle, 0.0);
 	model1->renderModel ();
 
+	//Face2
 	model2->setRotate (0.0, angle, 0.0);
 	model2->renderModel ();
 
@@ -99,6 +137,46 @@ void display(){
 	model2->enableBlend (false, 0);
 	model2->setPosition (0.0, 0.0, 0.0);
 
+	glColor4f(1.0f, 1.0f, 1.0f, 0.1f);
+	model3->setPosition (0.0, -4.1, 0.0);
+	model3->enableBlend (true, 0);
+	model3->setBlendFunc (GL_SRC_ALPHA, GL_ONE, 0);
+	model3->renderModel ();
+	model3->enableBlend (false, 0);
+	model3->setPosition (0.0, 0.0, 0.0);
+
+	glColor4f(1.0f, 1.0f, 1.0f, 0.1f);
+	model4->setPosition (0.0, -4.1, 0.0);
+	model4->enableBlend (true, 0);
+	model4->setBlendFunc (GL_SRC_ALPHA, GL_ONE, 0);
+	model4->renderModel ();
+	model4->enableBlend (false, 0);
+	model4->setPosition (0.0, 0.0, 0.0);
+
+
+	glColor4f(1.0f, 1.0f, 1.0f, 0.1f);
+	model5->setPosition (0.0, -4.1, 0.0);
+	model5->enableBlend (true, 0);
+	model5->setBlendFunc (GL_SRC_ALPHA, GL_ONE, 0);
+	model5->renderModel ();
+	model5->enableBlend (false, 0);
+	model5->setPosition (0.0, 0.0, 0.0);
+
+	glColor4f(1.0f, 1.0f, 1.0f, 0.1f);
+	model6->setPosition (0.0, -4.1, 0.0);
+	model6->enableBlend (true, 0);
+	model6->setBlendFunc (GL_SRC_ALPHA, GL_ONE, 0);
+	model6->renderModel ();
+	model6->enableBlend (false, 0);
+	model6->setPosition (0.0, 0.0, 0.0);
+
+	glColor4f(1.0f, 1.0f, 1.0f, 0.1f);
+	model7->setPosition (0.0, -4.1, 0.0);
+	model7->enableBlend (true, 0);
+	model7->setBlendFunc (GL_SRC_ALPHA, GL_ONE, 0);
+	model7->renderModel ();
+	model7->enableBlend (false, 0);
+	model7->setPosition (0.0, 0.0, 0.0);
 
 
 	world->finishRender ();
@@ -107,6 +185,8 @@ void display(){
 }
 
 void init(){
+
+	printf ("%s.\n", glGetString(GL_EXTENSIONS));
 
 	world = new World ();
 	world->setSize (WINDOW_W, WINDOW_H);
@@ -117,8 +197,8 @@ void init(){
 	
 	world->setCamera (camera);
 
-	image = new ImageTGA ();
-	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/mmi/rocks.tga");
+	image = new ImageBMP ();
+	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/mmi/menu.bmp");
 
 
 	model = new Model ();
@@ -239,8 +319,30 @@ void keyboard(unsigned char key, int x, int y){
 		angle += 22.5;
       	if(angle >= 360)
 			angle -= 360;
+		printf ("angle = %f.\n", angle);
 			
       break;
+
+    case 's': case 'S': case 29:
+		if (enable_animation) {
+			enable_animation = false;
+
+			menu_x = 0.0f;
+			menu_y = 0.0f;
+			menu_z = 0.0f;
+
+			//model_oil->setPosition (0.0f, 0.0f, 0.0f);
+
+
+		}
+		else {
+			enable_animation = true;
+    		gettimeofday(&timeNow, NULL);
+			start_time = CLOCK(timeNow);
+		}
+
+      break;
+
 
   }
 }

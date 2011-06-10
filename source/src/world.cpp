@@ -128,7 +128,7 @@ M3D_BEGIN_NAMESPACE
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
 
-        m_camera->gluLookAt();
+        m_camera->gluLookAtv();
 /*
         if (m_fog != NULL) {
             glEnable(GL_FOG);

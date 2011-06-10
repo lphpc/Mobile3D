@@ -3,6 +3,7 @@
 #define _CAMERA_H
 
 #include "m3d.h"
+#include "quaternion.h"
 
 
 M3D_BEGIN_NAMESPACE
@@ -33,9 +34,28 @@ M3D_BEGIN_NAMESPACE
         void setCenter(GLfloat centerx, GLfloat centery, GLfloat centerz);
         void setUp(GLfloat upx, GLfloat upy, GLfloat upz);
         void gluLookAt();
+
+	private:
+	Quaternion m_Orientation;
+	
+	public:
+
+        void gluLookAtv();
+
+	void move (GLfloat x, GLfloat y, GLfloat z);
+	void moveRelative (GLfloat x, GLfloat y, GLfloat z);
+
+	void rotate (const Quaternion& q);
+
+        void rotate(const Vector3& axis, const Radian& angle);
+
+
+	void roll (const GLfloat angle); 
+	void yaw (const GLfloat angle); 
+	void pitch (const GLfloat angle);  
+
 		
 	};
-
 
 M3D_END_NAMESPACE
 

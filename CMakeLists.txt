@@ -25,6 +25,7 @@ else ()
 
 	SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules) 
 	find_package(OpenGLES)
+	find_package(Mobile3D)
 
 	IF (OPENGLES_INCLUDE_DIR AND OPENGLES_LIBRARIES)
 		MESSAGE(STATUS "Found OpenGLES libraries")
