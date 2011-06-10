@@ -14,11 +14,17 @@ extern "C" {
 #include <math.h>
 
 #ifdef OPENGL
+
+#ifdef MAC
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif  //end of MAC
+
 #else 
 #include <GLES/gl.h>
 #include <android/log.h>
-#endif
+#endif  //end of OPENGL
 
 #define M3D_BEGIN_NAMESPACE namespace M3D {
 #define M3D_END_NAMESPACE }

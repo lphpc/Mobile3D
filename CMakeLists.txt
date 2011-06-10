@@ -8,6 +8,8 @@ ENDIF()
 
 
 #SET( ANDROID "YES" )
+
+#add_definitions(-DMAC)
 add_definitions(-DOPENGL)
 
 
@@ -17,8 +19,8 @@ find_package(GLUT)
 find_package(OpenGL)
 
 
-ADD_SUBDIRECTORY(source)
-#ADD_SUBDIRECTORY(examples)
+#ADD_SUBDIRECTORY(source)
+ADD_SUBDIRECTORY(examples)
 
 
 else ()

@@ -1,14 +1,21 @@
+#ifdef MAC
 
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
+#endif
 
 #include <mobile3d/m3d.h>
 #include <mobile3d/world.h>
 #include <mobile3d/camera.h>
 #include <mobile3d/model.h>
-#include <mobile3d/M3DRenderer.h>
-#include <mobile3d/M3DMeshData.h>
+//#include <mobile3d/M3DRenderer.h>
+//#include <mobile3d/M3DMeshData.h>
 #include "data.h"
 
 

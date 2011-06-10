@@ -1,8 +1,15 @@
 
 #include <sys/time.h>
+
+#ifdef MAC
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
+#endif
 
 #include <mobile3d/m3d.h>
 #include <mobile3d/world.h>
@@ -60,6 +67,8 @@ void display(){
  
 	world->prepareRender ();
 
+	//draw floor
+	model_floor->renderModel ();
 
 	if(enable_animation) { 
 		
@@ -107,8 +116,30 @@ void display(){
 	model7->setRotate (0.0, angle, 0.0);
 	model7->renderModel ();
 
-	//draw floor
-	model_floor->renderModel ();
+
+
+	
+	//Face 0
+	if(enable_animation && angle == 0.0) { 
+		model->setPosition (0.0f, 0.0f, menu_z);
+	}
+	model->setRotate (0.0, angle, 0.0);
+	model->renderModel ();
+
+
+
+	//Face 1
+	if(enable_animation && angle == 45.0) { 
+		model1->setPosition (0.0f, 0.0f, menu_z);
+	}
+	model1->setRotate (0.0, angle, 0.0);
+	model1->renderModel ();
+
+	//Face2
+	model2->setRotate (0.0, angle, 0.0);
+	model2->renderModel ();
+
+
 
 
 	//draw flection	
@@ -177,7 +208,6 @@ void display(){
 	model7->renderModel ();
 	model7->enableBlend (false, 0);
 	model7->setPosition (0.0, 0.0, 0.0);
-
 
 	world->finishRender ();
 
