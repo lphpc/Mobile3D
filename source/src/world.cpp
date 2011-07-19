@@ -9,9 +9,17 @@ M3D_BEGIN_NAMESPACE
             m_bggreen(0.0f),
             m_bgblue(0.0f),
             m_bgalpha(0.0f),
+            m_left(0.0f),
+            m_right(0.0f),
+            m_top(0.0f),
+            m_bottom(0.0f),
             m_fovy(60.0f),
             m_znear(1.0f),
             m_zfar(1000.0f){
+
+	
+                enable_perspective = true;
+                enable_ortho = false;
 
 		m_camera = NULL;
 		m_light = NULL;
@@ -44,7 +52,10 @@ M3D_BEGIN_NAMESPACE
         glViewport( 0, 0, m_width, m_height );
 
         //set the matrix mode
-        gluPerspective();
+        if (enable_perspective)
+            gluPerspective();
+        else if (enable_ortho)
+	    gluOrtho ();
 
         //reset the matrix mode
         glMatrixMode(GL_MODELVIEW); //GL_PROJECTION,GL_MODELVIEW
@@ -96,6 +107,25 @@ M3D_BEGIN_NAMESPACE
         m_fovy = fovy;
         m_znear = znear;
         m_zfar = zfar;
+
+        enable_perspective = true;
+        enable_ortho = false;
+
+    }
+
+
+    void World::setOrtho(GLfloat left, GLfloat right, GLfloat top, GLfloat bottom, GLfloat znear, GLfloat zfar)
+    {
+
+        m_left = left;
+        m_right = right; 
+        m_top = top; 
+        m_bottom = bottom;
+        m_znear = znear;
+        m_zfar = zfar;
+	
+        enable_perspective = false;
+        enable_ortho = true;
     }
 
 
@@ -123,6 +153,15 @@ M3D_BEGIN_NAMESPACE
 #endif
     }
 
+
+    void World::gluOrtho() {
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+
+        glOrtho (m_left, m_right, m_top, m_bottom, m_znear, m_zfar);
+
+    }
 
     void World::prepareRender() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

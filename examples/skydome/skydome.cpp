@@ -59,11 +59,12 @@ void init(){
     model->setTriangleNums(1, 0);
 */
 
-	skydome = new Skydome(128, 30.0f, 10.0f);
+	skydome = new Skydome(256, 30.0f, 10.0f);
+	//skydome = new Skydome(128, 30.0f, 10.0f);
 	image = new ImageBMP ();
 	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/skydome/clouds.bmp");
 	skydome->setTextureId (texture->textureId);
-	//skydome->setRotate(90.0f, 0.0f, 0.0f);
+	skydome->setRotate(90.0f, 0.0f, 0.0f);
 	
 
 	
@@ -71,6 +72,45 @@ void init(){
 
 void keyboard(unsigned char key, int x, int y){
   switch(key) {
+
+    case 'i': case 'I':
+	camera->pitch (1.0f);
+        glutPostRedisplay();
+
+      break;
+
+    case 'k': case 'K':
+	camera->pitch (-1.0f);
+        glutPostRedisplay();
+
+      break;
+
+
+    case 'j': case 'J':
+	camera->yaw (1.0f);
+        glutPostRedisplay();
+
+      break;
+
+    case 'l': case 'L':
+	camera->yaw (-1.0f);
+        glutPostRedisplay();
+
+
+
+    case 's': case 'S':
+        camera->move (0.0f, 0.0f, 1.0f);
+        glutPostRedisplay();
+
+      break;
+
+    case 'w': case 'W':
+        camera->move (0.0f, 0.0f, -1.0f);
+        glutPostRedisplay();
+
+      break;
+
+
     case 'q': case 'Q': case 27:
       exit(0);
       break;

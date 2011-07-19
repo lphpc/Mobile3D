@@ -123,7 +123,7 @@ M3D_BEGIN_NAMESPACE
 #endif
         //after set m_enabled to true, so model can render it
 	setPosition(0.0f, (float)(-radius * sinf(DTOR * dphi)), 0.0f);
-        setRotate(-90.0f, 0.0f, 0.0f);
+        //setRotate(-90.0f, 0.0f, 0.0f);
 #ifdef DEBUG
         printf("Generate Skydome OK!\n");
 #endif
