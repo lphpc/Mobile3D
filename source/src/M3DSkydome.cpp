@@ -14,7 +14,7 @@ Skydome::Skydome()
 }
 Skydome::~Skydome()
 {
-	//ReleaseDome();
+	ReleaseDome();
 }
 void Skydome::GenerateDome(float radius, float dtheta, float dphi, float hTile, float vTile)
 {
@@ -256,10 +256,13 @@ void Skydome::GenerateDome(float radius, float dtheta, float dphi, float hTile, 
         FREEANDNULL(vertices1);
         FREEANDNULL(colors1);
 
+        //for map3d
+		setPosition (400.0f, 200.0f, -50.0f);
 
 
-		setPosition (0.0f, -100.0f, 0.0f);
-		setRotate (270, 1.0f, 0.0f);
+		//for examples/skydome
+//		setPosition (0.0f, -100.0f, 0.0f);
+//		setRotate (270, 1.0f, 0.0f);
 
 
 		

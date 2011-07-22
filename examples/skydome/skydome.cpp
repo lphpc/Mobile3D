@@ -17,7 +17,7 @@
 
 using namespace M3D;
 
-#define SKYDOMETEXTURE 1
+//#define SKYDOMETEXTURE 1
 
 World *world = NULL;
 Camera *camera = NULL;
@@ -151,6 +151,8 @@ int main(int argc, char** argv){
 	FREEANDNULL (world);
 	FREEANDNULL (camera);
 	FREEANDNULL (model);
+	delete (skydome);
+
   	return 0;
 }
 
