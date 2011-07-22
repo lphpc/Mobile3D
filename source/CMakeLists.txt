@@ -18,6 +18,7 @@ if (NOT OPENGLES_FOUND)
 		include/M3DQuad.h
 		include/font.h
 		include/M3DSkydome.h
+		include/M3DSkydomeTexture.h
 		include/m3dmath.h
 		include/vector3.h
 		include/quaternion.h
@@ -37,6 +38,7 @@ if (NOT OPENGLES_FOUND)
 		src/M3DQuad.cpp
 		src/font.cpp
 		src/M3DSkydome.cpp
+		src/M3DSkydomeTexture.cpp
 		src/m3dmath.cpp
 		src/vector3.cpp
 		src/quaternion.cpp

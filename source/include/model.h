@@ -127,15 +127,15 @@ public:
     void renderModel();
 
     //add for light/material
-    void setMaterialAmbient(GLfloat r, GLfloat g, GLfloat b, int meshIndex);
-    void setMaterialDiffuse(GLfloat r, GLfloat g, GLfloat b, int meshIndex);
-    void setMaterialSpecular(GLfloat r, GLfloat g, GLfloat b, int meshIndex);
-    void setMaterialEmission(GLfloat r, GLfloat g, GLfloat b, int meshIndex);
-    void setMaterialShininess(GLfloat s, int meshIndex);
+    void setMaterialAmbient(GLfloat r, GLfloat g, GLfloat b, int meshIndex = 0);
+    void setMaterialDiffuse(GLfloat r, GLfloat g, GLfloat b, int meshIndex = 0);
+    void setMaterialSpecular(GLfloat r, GLfloat g, GLfloat b, int meshIndex = 0);
+    void setMaterialEmission(GLfloat r, GLfloat g, GLfloat b, int meshIndex = 0);
+    void setMaterialShininess(GLfloat s, int meshIndex = 0);
 
 		
-	void enableBlend (GLboolean enabled, int meshIndex);
-	void setBlendFunc (GLenum sfactor, GLenum dfactor, int meshIndex);
+	void enableBlend (GLboolean enabled, int meshIndex = 0);
+	void setBlendFunc (GLenum sfactor, GLenum dfactor, int meshIndex = 0);
 
 #ifdef MATRIX4X4
 	void setMatrix (MMatrix4x4 &m);
@@ -143,7 +143,7 @@ public:
 	void setMatrix (float *m);
 #endif
 
-	void setRenderPrimitivesMode (GLenum mode, int meshIndex);
+	void setRenderPrimitivesMode (GLenum mode, int meshIndex = 0);
 };
 
 

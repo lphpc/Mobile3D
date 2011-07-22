@@ -329,14 +329,13 @@ void Mesh::renderMesh() {
 
     //dump vertices
     for (int i = 0; i < 6 * 3; i++) {
-        _M3D_PRINTF ("m_vertices[%d] = %g. \n", i, m_vertices[i]);
+        _M3D_PRINTF ("m_vertices[%d] = %f. \n", i, m_vertices[i]);
     }
 
 
 
 
     //end light/material
-
     if (m_indices != NULL){
         glDrawElements(m_renderPrimitivesMode, m_triangleNums * 3, GL_UNSIGNED_SHORT, m_indices);
         //glDrawElements(GL_TRIANGLES, m_triangleNums * 3, GL_UNSIGNED_SHORT, m_indices);

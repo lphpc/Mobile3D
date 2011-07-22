@@ -6,44 +6,23 @@
 #include <mobile3d/m3d.h>
 #include <mobile3d/world.h>
 #include <mobile3d/camera.h>
-#include <mobile3d/model.h>
-#include <mobile3d/imageBMP.h>
-#include <mobile3d/M3DSkydome.h>
-#include <mobile3d/M3DSkydomeTexture.h>
-#include "data.h"
+
+#include "skydome.h"
 
 #define WINDOW_W    800
 #define WINDOW_H    600
 
 using namespace M3D;
 
-#define SKYDOMETEXTURE 1
-
 World *world = NULL;
 Camera *camera = NULL;
-Model *model = NULL;
-
-#ifdef SKYDOMETEXTURE
-SkydomeT *skydome = NULL;
-#else
-Skydome *skydome = NULL;
-#endif
-
-ImageBMP *image = NULL;
 float angle = 0.0f;
+Skydome *skydome = NULL;
 
 void display(){
  
 	world->prepareRender ();
-//	model->renderModel ();
-
-#ifdef SKYDOMETEXTURE
-	skydome->setRotate(-90.0f, 0.0f, angle);
-	skydome->renderModel ();
-#else
-	skydome->renderModel ();
-#endif
-
+	skydome->RenderSkyDome(0.0f, 0.0f, 0.0f);
 	world->finishRender ();
 
 	glFlush();
@@ -56,36 +35,16 @@ void init(){
 	world->init ();
 
 	camera = new Camera ();
-//	camera->setEye (0.0f, 0.0f, 5.0f);
-
-
    	camera->setEye(60.0f, 30.0f, 60.0f);
    	camera->setCenter(0.0f, 15.0f, 0.0f);
 
 	
 	world->setCamera (camera);
-/*
-	model = new Model ();
-	model->setMeshCount (MESH_NUM);
 
-    //init second triangle
-    model->setVertices(vertices0, VERTEX_NUM * 3 * sizeof(GLfloat), 0);
-    model->setColors(colors, VERTEX_NUM * 4 * sizeof(GLubyte), 0);
-    model->setTriangleNums(1, 0);
-*/
-
-#ifdef SKYDOMETEXTURE 
-	skydome = new SkydomeT(256, 30.0f, 10.0f);
-	//skydome = new Skydome(128, 30.0f, 10.0f);
-	image = new ImageBMP ();
-	Texture *texture = image->loadTexture ("/usr/local/share/mobile3d/skydome/clouds.bmp");
-	skydome->setTextureId (texture->textureId);
-	skydome->setRotate(90.0f, 0.0f, 0.0f);
-#else
+	
 	skydome = new Skydome();
 	skydome->GenerateDome(256, 30.0f, 10.0f, 64.0f, 64.0f);
-
-#endif	
+	
 
 	
 }
@@ -119,13 +78,13 @@ void keyboard(unsigned char key, int x, int y){
 
 
     case 's': case 'S':
-        camera->move (0.0f, 0.0f, 10.0f);
+        camera->move (0.0f, 0.0f, 1.0f);
         glutPostRedisplay();
 
       break;
 
     case 'w': case 'W':
-        camera->move (0.0f, 0.0f, -10.0f);
+        camera->move (0.0f, 0.0f, -1.0f);
         glutPostRedisplay();
 
       break;
@@ -150,7 +109,6 @@ int main(int argc, char** argv){
   	glutMainLoop();
 	FREEANDNULL (world);
 	FREEANDNULL (camera);
-	FREEANDNULL (model);
   	return 0;
 }
 

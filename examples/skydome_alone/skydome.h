@@ -1,12 +1,10 @@
 
-#ifndef _M3D_SKYDOME_H_
-#define _M3D_SKYDOME_H_
+/*
+ * http://hi.baidu.com/codefish/blog/item/438e2f6e0e0865d980cb4a4f.html
+ */
 
-
-#include "model.h"
-
-
-M3D_BEGIN_NAMESPACE
+#ifndef _SKYDOME_H_
+#define _SKYDOME_H_
 
 #ifndef PI
 #define PI 3.1415926535897f
@@ -28,12 +26,13 @@ typedef struct {
 
 
 
-class Skydome: public Model 
+class Skydome
 {
 public:
 	Skydome();
 	~Skydome();
 	void GenerateDome(float radius, float dtheta, float dphi, float hTile, float vTile);
+	int RenderSkyDome(float ,float ,float);
 
 protected:
 	void ReleaseDome();
@@ -44,8 +43,6 @@ private:
 	float mY;
 };
 
-
-M3D_END_NAMESPACE
 
 #endif
 

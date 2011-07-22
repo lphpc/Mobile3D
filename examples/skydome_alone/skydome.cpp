@@ -1,13 +1,12 @@
 
+#include <stdio.h>
 #include <string.h>
 #include <math.h>
 
+#include <GL/gl.h>
 
-#include "M3DSkydome.h"
+#include "skydome.h"
 
-
-
-M3D_BEGIN_NAMESPACE
 
 Skydome::Skydome()
 {
@@ -120,7 +119,6 @@ void Skydome::GenerateDome(float radius, float dtheta, float dphi, float hTile, 
    		}
 	}
 
-
 	//得到最低点
 	float minZ = Vertices[0].z;
 	for(int j=1;j<NumVertices;j++)
@@ -132,15 +130,11 @@ void Skydome::GenerateDome(float radius, float dtheta, float dphi, float hTile, 
 
 	mY = minZ;
 
-	int botNumVertices = 0;
 	for(int j=0;j<NumVertices;j++)
 	{
-		if(Vertices[j].z == minZ)   {
-			Vertices[j].flag=1;
-			botNumVertices++;
-		}
+		if(Vertices[j].z == minZ)   Vertices[j].flag=1;
 	}
-
+/*
 	// Fix the problem at the seam
 	for (int i=0; i < NumVertices-3; i++)
 	{
@@ -169,108 +163,11 @@ void Skydome::GenerateDome(float radius, float dtheta, float dphi, float hTile, 
 		if (Vertices[i+2].v - Vertices[i+1].v > 0.8f)
 			Vertices[i+1].v += 1.0f;
 	}
-
-
-        setMeshCount(2);
-
-        float *vertices0 = (float *) malloc(NumVertices * 3 * sizeof(float));
-        GLubyte *colors0 = (GLubyte *) malloc(NumVertices * 4 * sizeof(GLubyte));
-        float *uvs0 = (float *) malloc(NumVertices * 2 * sizeof(float));
-
-        setTriangleNums(NumVertices/3);
-
-		int ver_id = 0;
-		int uv_id = 0;
-		int color_id = 0;
-		for (int i=0; i < NumVertices; i++)
-		{
-
-			vertices0[ver_id++] = Vertices[i].x;
-			vertices0[ver_id++] = Vertices[i].y;
-			vertices0[ver_id++] = Vertices[i].z;
-
-			if (Vertices[i].flag == 1) {
-
-				colors0[color_id++] = 242; 
-				colors0[color_id++] = 242;
-				colors0[color_id++] = 255;
-				colors0[color_id++] = 0;
-
-			}
-			else {
-				colors0[color_id++] = 51; 
-				colors0[color_id++] = 128;
-				colors0[color_id++] = 255;
-				colors0[color_id++] = 0;
-			}
-
-			uvs0 [uv_id++] =  Vertices[i].u;
-			uvs0 [uv_id++] =  Vertices[i].v;
-
-		}
-
-
-        setVertices(vertices0, NumVertices * 3 * sizeof(float));
-        setColors(colors0, NumVertices * 4 * sizeof(GLubyte));
-        setUvs(uvs0, NumVertices * 6 * sizeof(float));
-
-		setRenderPrimitivesMode (GL_TRIANGLE_STRIP);
-
-        FREEANDNULL(vertices0);
-        FREEANDNULL(colors0);
-        FREEANDNULL(uvs0);
-
-
-        float *vertices1 = (float *) malloc(botNumVertices * 3 * sizeof(float));
-        GLubyte *colors1 = (GLubyte *) malloc(botNumVertices * 4 * sizeof(float));
-
-        setTriangleNums(botNumVertices/3, 1);
-
-		ver_id = 0;
-		color_id = 0;
-		for (int i=0; i < NumVertices; i++)
-		{
-
-
-			if (Vertices[i].flag == 1) {
-
-				vertices1[ver_id++] = Vertices[i].x;
-				vertices1[ver_id++] = Vertices[i].y;
-				vertices1[ver_id++] = Vertices[i].z;
-
-				colors1[color_id++] = 230; 
-				colors1[color_id++] = 230;
-				colors1[color_id++] = 255;
-				colors1[color_id++] = 0;
-
-			}
-
-		}
-
-
-        setVertices(vertices1, botNumVertices * 3 * sizeof(float), 1);
-        setColors(colors1, botNumVertices * 4 * sizeof(GLubyte), 1);
-
-		setRenderPrimitivesMode (GL_TRIANGLE_FAN, 1);
-
-        FREEANDNULL(vertices1);
-        FREEANDNULL(colors1);
-
-
-
-		setPosition (0.0f, -100.0f, 0.0f);
-		setRotate (270, 1.0f, 0.0f);
-
-
-		
-
-	
+*/
 }
-/*
+
 int Skydome::RenderSkyDome(float x,float y,float z)
 {
-	return;
-
 	glPushMatrix();
 	//glTranslatef(0.0f, -100.0f, 0.0f);
 	glTranslatef(x, y-100, z);
@@ -290,7 +187,7 @@ int Skydome::RenderSkyDome(float x,float y,float z)
 			//glColor3f(0.5f, 0.7f, 0.8f);
 			glColor3f(0.2f, 0.5f, 1.0f);  
 
-		glTexCoord2f(Vertices[i].u, Vertices[i].v);
+//		glTexCoord2f(Vertices[i].u, Vertices[i].v);
 		glVertex3f(Vertices[i].x, Vertices[i].y, Vertices[i].z);
 	}
 	glEnd();
@@ -305,14 +202,13 @@ int Skydome::RenderSkyDome(float x,float y,float z)
 			glTexCoord2f(Vertices[i].u, Vertices[i].v);
 			glVertex3f(Vertices[i].x, Vertices[i].y, Vertices[i].z);
 		}
+
 	}
 	glEnd();
 
 	glPopMatrix();
 	return 1;
 }
-*/
-
 void Skydome::ReleaseDome()
 {
 	if (Vertices)
@@ -321,6 +217,3 @@ void Skydome::ReleaseDome()
 		Vertices = NULL;
 	}
 }
-
-
-M3D_END_NAMESPACE
