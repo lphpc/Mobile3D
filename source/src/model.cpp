@@ -287,19 +287,19 @@ void Mesh::renderMesh() {
     if (m_materialAmbient != NULL) {
         glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_materialAmbient);
 
-        _M3D_PRINTF ("ambient: r = %g, g = %g, b = %g.\n", m_materialAmbient[0], m_materialAmbient[1], m_materialAmbient[2]);
+//        _M3D_PRINTF ("ambient: r = %g, g = %g, b = %g.\n", m_materialAmbient[0], m_materialAmbient[1], m_materialAmbient[2]);
 
     }
 
     if (m_materialDiffuse != NULL){
         glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_materialDiffuse);
-        _M3D_PRINTF ("diffuse: r = %g, g = %g, b = %g.\n", m_materialDiffuse[0], m_materialDiffuse[1], m_materialDiffuse[2]);
+//        _M3D_PRINTF ("diffuse: r = %g, g = %g, b = %g.\n", m_materialDiffuse[0], m_materialDiffuse[1], m_materialDiffuse[2]);
 
     }
 
     if (m_materialSpecular != NULL) {
         glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_materialSpecular);
-      	_M3D_PRINTF ("specular: r = %g, g = %g, b = %g.\n", m_materialSpecular[0], m_materialSpecular[1], m_materialSpecular[2]);
+//      	_M3D_PRINTF ("specular: r = %g, g = %g, b = %g.\n", m_materialSpecular[0], m_materialSpecular[1], m_materialSpecular[2]);
 
     }
 
@@ -307,18 +307,19 @@ void Mesh::renderMesh() {
     if (m_materialEmission != NULL) {
         glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, m_materialEmission);
 
-      _M3D_PRINTF ("emission: r = %g, g = %g, b = %g.\n", m_materialEmission[0], m_materialEmission[1], m_materialEmission[2]);
+//      _M3D_PRINTF ("emission: r = %g, g = %g, b = %g.\n", m_materialEmission[0], m_materialEmission[1], m_materialEmission[2]);
 
 	}
 
 
     if (m_materialShininess != NULL) {
         glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, m_materialShininess);
-      	_M3D_PRINTF ("shininess: s = %g.\n", m_materialShininess[0]);
+//      	_M3D_PRINTF ("shininess: s = %g.\n", m_materialShininess[0]);
 
     }
 
 
+#ifdef DEBUG
     //dump indices
 
     if (m_indices != NULL){
@@ -331,7 +332,7 @@ void Mesh::renderMesh() {
     for (int i = 0; i < 6 * 3; i++) {
         _M3D_PRINTF ("m_vertices[%d] = %f. \n", i, m_vertices[i]);
     }
-
+#endif
 
 
 
@@ -344,6 +345,7 @@ void Mesh::renderMesh() {
         glDrawArrays(m_renderPrimitivesMode, 0, m_triangleNums * 3);
         //glDrawArrays(GL_TRIANGLES, 0, m_triangleNums * 3);
 	}
+
 
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);

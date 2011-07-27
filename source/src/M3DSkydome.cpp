@@ -212,7 +212,7 @@ void Skydome::GenerateDome(float radius, float dtheta, float dphi, float hTile, 
 
         setVertices(vertices0, NumVertices * 3 * sizeof(float));
         setColors(colors0, NumVertices * 4 * sizeof(GLubyte));
-        setUvs(uvs0, NumVertices * 6 * sizeof(float));
+//        setUvs(uvs0, NumVertices * 6 * sizeof(float));
 
 		setRenderPrimitivesMode (GL_TRIANGLE_STRIP);
 
@@ -241,7 +241,7 @@ void Skydome::GenerateDome(float radius, float dtheta, float dphi, float hTile, 
 				colors1[color_id++] = 230; 
 				colors1[color_id++] = 230;
 				colors1[color_id++] = 255;
-				colors1[color_id++] = 0;
+				colors1[color_id++] = 255;
 
 			}
 
@@ -249,7 +249,7 @@ void Skydome::GenerateDome(float radius, float dtheta, float dphi, float hTile, 
 
 
         setVertices(vertices1, botNumVertices * 3 * sizeof(float), 1);
-        setColors(colors1, botNumVertices * 4 * sizeof(GLubyte), 1);
+	    setColors(colors1, botNumVertices * 4 * sizeof(GLubyte), 1);
 
 		setRenderPrimitivesMode (GL_TRIANGLE_FAN, 1);
 
@@ -257,12 +257,12 @@ void Skydome::GenerateDome(float radius, float dtheta, float dphi, float hTile, 
         FREEANDNULL(colors1);
 
         //for map3d
-		setPosition (400.0f, 200.0f, -50.0f);
+//		setPosition (400.0f, 200.0f, -10.0f);
 
 
 		//for examples/skydome
 //		setPosition (0.0f, -100.0f, 0.0f);
-//		setRotate (270, 1.0f, 0.0f);
+		setRotate (270.0f, 0.0f, 0.0f);
 
 
 		
