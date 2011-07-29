@@ -38,34 +38,23 @@ static GLfloat angle_y = 0;   /* in degrees */
 
 ImageBMP *image = NULL;
 
-#define MAX_CAR_NUM 20 
+#define MAX_CAR_NUM 15
 const char * file_name [MAX_CAR_NUM] = {
-
+        "/usr/local/share/mobile3d/audi/bremse_back_left.am",
+        "/usr/local/share/mobile3d/audi/bremse_back_right.am",
+        "/usr/local/share/mobile3d/audi/bremse_front_left.am",
+        "/usr/local/share/mobile3d/audi/bremse_front_right.am",
+        "/usr/local/share/mobile3d/audi/edge_frame_enginecover_backbox.am",
+        "/usr/local/share/mobile3d/audi/frame.am",
+        "/usr/local/share/mobile3d/audi/front_net_light.am",
+        "/usr/local/share/mobile3d/audi/inside.am",
+        "/usr/local/share/mobile3d/audi/light.am",
         "/usr/local/share/mobile3d/audi/logo.am",
-        "/usr/local/share/mobile3d/audi/A61a.am",
-        "/usr/local/share/mobile3d/audi/A61b.am",
-        "/usr/local/share/mobile3d/audi/A61c.am",
-        "/usr/local/share/mobile3d/audi/A61d.am",
-        "/usr/local/share/mobile3d/audi/A61e.am",
-        "/usr/local/share/mobile3d/audi/A61f.am",
-        "/usr/local/share/mobile3d/audi/A62a.am",
-        "/usr/local/share/mobile3d/audi/A62b.am",
-        "/usr/local/share/mobile3d/audi/A62c.am",
-        "/usr/local/share/mobile3d/audi/A62d.am",
-        "/usr/local/share/mobile3d/audi/A62e.am",
-        "/usr/local/share/mobile3d/audi/A62f.am",
-//        "/usr/local/share/mobile3d/audi/A62g.am",
-        "/usr/local/share/mobile3d/audi/A62h.am",
-        "/usr/local/share/mobile3d/audi/A63a.am",
-        "/usr/local/share/mobile3d/audi/A63b.am",
-//        "/usr/local/share/mobile3d/audi/A63c.am",
-//        "/usr/local/share/mobile3d/audi/A63d.am",
-//        "/usr/local/share/mobile3d/audi/A63e.am",
-//        "/usr/local/share/mobile3d/audi/A63f.am",
-        "/usr/local/share/mobile3d/audi/A6bremse1.am",
-        "/usr/local/share/mobile3d/audi/A6bremse2.am",
-        "/usr/local/share/mobile3d/audi/A6bremse3.am",
-        "/usr/local/share/mobile3d/audi/A6bremse4.am",
+        "/usr/local/share/mobile3d/audi/middle_frame_four_wheel.am",
+        "/usr/local/share/mobile3d/audi/wheel_front_left.am",
+        "/usr/local/share/mobile3d/audi/wheel_front_right.am",
+        "/usr/local/share/mobile3d/audi/wheel_back_left.am",
+        "/usr/local/share/mobile3d/audi/wheel_back_right.am",
 };
 
 
