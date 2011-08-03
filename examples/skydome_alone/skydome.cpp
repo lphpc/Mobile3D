@@ -3,7 +3,11 @@
 #include <string.h>
 #include <math.h>
 
+#ifdef MAC
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 #include "skydome.h"
 

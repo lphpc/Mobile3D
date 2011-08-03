@@ -1,10 +1,17 @@
 
-#define ANISOTROPY_SUPPORT 1
+//#define ANISOTROPY_SUPPORT 1
 
 #include "imageBMP.h"
 
 #ifdef ANISOTROPY_SUPPORT
+
+#ifdef MAC
 #include <GL/glu.h>
+#else
+#include <OpenGL/glu.h>
+#endif
+
+
 #endif
 
 
